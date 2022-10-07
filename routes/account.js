@@ -4,6 +4,6 @@ var addAccount = require("../controller/account/addAccount");
 
 
 /* GET users listing. */
-router.post('/add', addAccount);
+router.get('/', addAccount);
 
 module.exports = router;
