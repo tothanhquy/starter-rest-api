@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var addAccount = require("../controller/account/addAccount");
+var AccountController = require("../controller/AccountController");
 
 
 /* GET users listing. */
-router.all('/', addAccount);
+router.all('/add', AccountController.addAccount);
 
 module.exports = router;
