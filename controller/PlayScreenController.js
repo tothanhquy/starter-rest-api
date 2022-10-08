@@ -110,9 +110,39 @@ exports.loadGamePlay = function(req, res, next) {
 }
 
 function checkWin(arrayIndex) {
-
+    for (let index = 0; index < arrayIndex.length; index++) {
+        if (arrayIndex[index] != index) return false;
+    }
+    return true;
 }
 
+function winGame(user, level, time) {
+    let db = new AccountModel.AccountModel();
+    let timePlay = db.getTimePlayByUser(rememberUserName);
+    if (timePlay.code == 1) {
+        if (timePlay.timePause == 0) {
+            //not pause
+            let timeNow = Date.now();
+            let timeFinish = timeNow - timePlay.timeStart - timePlay.timeMinus;
+
+            let updateLevel = db.updateLevelTime(
+                rememberUserName,
+                level,
+                timeFinish);
+            if (updateLevel.code == 1) {
+
+                let updateTimePlay = db.updateTimePlay(rememberUserName, 0, 0, 0);
+                if (updateTimePlay.code == 1) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            // pausing
+            return false;
+        }
+    }
+}
 exports.move = function(req, res, next) {
     function getIndexByValue(err, value) {
         for (let index = 0; index < arr.length; index++) {
@@ -158,6 +188,13 @@ exports.move = function(req, res, next) {
                     arrayIndex[level - 1] = swapLocation;
 
                     resFunc.data.matrix = arrayIndex;
+
+                    if (checkWin(resFunc.data.matrix) && winGame(rememberUserName, level)) {
+                        //win
+                        resFunc.data.isWin = true;
+                    } else {
+                        resFunc.data.isWin = false;
+                    }
                     resFunc.code = 1;
                 }
             }
