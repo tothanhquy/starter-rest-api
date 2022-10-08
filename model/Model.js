@@ -46,6 +46,7 @@ exports.Model = class {
     }
 
     executeQuery(sql, sqlAgruments) {
+        //default result error
         var resFunc = GenaralMethod.getResModelObject();
 
         try {
@@ -56,6 +57,7 @@ exports.Model = class {
                     if (err) throw err;
                     resFunc.data = result;
                     resFunc.code = 1;
+                    resFunc.effectedRows = result.effectedRows;
                 });
             }
         } catch (err) {
@@ -64,5 +66,10 @@ exports.Model = class {
             //closeConnection();
         }
         return resFunc;
+
+    }
+
+    replaceSpecialCharacter(str) {
+        return str.replace(/[&\/\\#,+()$~%'":*?<>{}]/g, '_');
     }
 }
