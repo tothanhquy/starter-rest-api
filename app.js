@@ -5,8 +5,8 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var accountRouter = require('./routes/account');
 var mainMenuRouter = require('./routes/mainMenu');
+var accountRouter = require('./routes/account');
 var playGameRouter = require('./routes/playGame');
 var error404R = require('./controller/error404');
 
