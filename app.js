@@ -6,7 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var mainMenuRouter = require('./routes/MainMenu');
-var accountRouter = require('./routes/Account');
+var accountRouter = require('./routes/Accoun');
 var playGameRouter = require('./routes/PlayGame');
 var error404R = require('./controller/error404');
 
