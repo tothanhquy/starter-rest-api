@@ -1,17 +1,17 @@
-exports.getResRouterObject = function() {
+exports.getResRouterObject = function(code = -1, error = "error", data = {}) {
     return {
-        code: -1,
-        error: "error",
-        data: []
+        code: code,
+        error: error,
+        data: data
     }
 }
 
-exports.getResModelObject = function() {
+exports.getResModelObject = function(code = -1, error = "error", data = {}, effectedRows = 0) {
     return {
-        code: -1,
-        error: "error",
-        data: {},
-        effectedRows: 0
+        code: code,
+        error: error,
+        data: data,
+        effectedRows: effectedRows
     }
 }
 

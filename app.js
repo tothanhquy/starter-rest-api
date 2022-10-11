@@ -26,6 +26,7 @@ app.use('/account', accountRouter);
 app.use('/main', mainMenuRouter);
 app.use('/game', playGameRouter);
 
+
 //app.use('/', indexRouter);
 // catch 404 and forward to error handler
 app.use(error404R);

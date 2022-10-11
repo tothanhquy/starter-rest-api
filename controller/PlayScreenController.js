@@ -3,7 +3,7 @@ var GenaralMethod = require("../GenaralMethod");
 var Controller = require("./Controller");
 var fs = require('fs');
 
-exports.createGamePlay = function(req, res, next) {
+exports.createGamePlay = async function(req, res, next) {
     function getRandomImageName() {
         let listImage = fs.readdirSync("../public/images/");
         return listImage[Math.floor(Math.random() * listImage.length)];
@@ -34,9 +34,9 @@ exports.createGamePlay = function(req, res, next) {
                 let timeStart = Date.now();
                 let timePauseDefault = 0;
                 let timeMinusDefault = 0;
-                if (db.updateImageName(rememberUserName, imageName).code == 1) {
-                    if (db.updatePlayMatrix(rememberUserName, arrayIndex).code == 1) {
-                        if (db.updateTimePlay(rememberUserName, timeStart, timePauseDefault, timeMinusDefault).code == 1) {
+                if ((await db.updateImageName(rememberUserName, imageName)).code == 1) {
+                    if ((await db.updatePlayMatrix(rememberUserName, arrayIndex)).code == 1) {
+                        if ((await db.updateTimePlay(rememberUserName, timeStart, timePauseDefault, timeMinusDefault)).code == 1) {
                             resFunc.data.imageName = imageName;
                             resFunc.data.metrix = arrayIndex;
                             resFunc.data.timeStart = timeStart;
@@ -55,7 +55,7 @@ exports.createGamePlay = function(req, res, next) {
     res.send(JSON.stringify(resFunc));
 }
 
-exports.loadGamePlay = function(req, res, next) {
+exports.loadGamePlay = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
@@ -63,30 +63,34 @@ exports.loadGamePlay = function(req, res, next) {
         let rememberAccessToken = req.query.rememberUserName;
 
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
-            let arrayIndex = JSON.parse(db.getPlayMatrixByUser(rememberUserName));
+            let arrayIndex;
+            let getMatrix = await db.getPlayMatrixByUser(rememberUserName);
+            if (getMatrix.code == 1) {
+                arrayIndex = getMatrix.data;
+            }
             if (arrayIndex && arrayIndex.length != 0) {
                 let level = Math.floor(Math.sqrt(arrayIndex.length + 1));
                 resFunc.data.matrix = arrayIndex;
                 resFunc.data.level = level;
 
-                let imageName = db.getImageNameByUser(rememberUserName);
+                let imageName = await db.getImageNameByUser(rememberUserName);
                 if (imageName.code == 1) {
                     resFunc.data.imageName = imageName;
 
-                    let timePlay = db.getTimePlayByUser(rememberUserName);
-                    if (timePlay.code == 1) {
-                        if (timePlay.timePause == 0) {
+                    let timePlay = await db.getTimePlayByUser(rememberUserName);
+                    if (timePlay.data.code == 1) {
+                        if (timePlay.data.timePause == 0) {
                             //not pause
-                            resFunc.data.timeStart = timePlay.timeStart;
-                            resFunc.data.timeMinus = timePlay.timeMinus;
+                            resFunc.data.timeStart = timePlay.data.timeStart;
+                            resFunc.data.timeMinus = timePlay.data.timeMinus;
                             resFunc.code = 1;
                         } else {
                             // pause in past
                             let timeNow = Date.now();
 
-                            resFunc.data.timeStart = timePlay.timeStart;
-                            resFunc.data.timeMinus = timePlay.timeMinus + (timeNow - timePlay.timePause);
-                            let updateTimePlay = db.updateTimePlay(
+                            resFunc.data.timeStart = timePlay.data.timeStart;
+                            resFunc.data.timeMinus = timePlay.data.timeMinus + (timeNow - timePlay.data.timePause);
+                            let updateTimePlay = await db.updateTimePlay(
                                 rememberUserName,
                                 resFunc.data.timeStart,
                                 0,
@@ -116,22 +120,22 @@ function checkWin(arrayIndex) {
     return true;
 }
 
-function winGame(user, level, time) {
+async function winGame(user, level, time) {
     let db = new AccountModel.AccountModel();
-    let timePlay = db.getTimePlayByUser(rememberUserName);
+    let timePlay = await db.getTimePlayByUser(rememberUserName);
     if (timePlay.code == 1) {
         if (timePlay.timePause == 0) {
             //not pause
             let timeNow = Date.now();
             let timeFinish = timeNow - timePlay.timeStart - timePlay.timeMinus;
 
-            let updateLevel = db.updateLevelTime(
+            let updateLevel = await db.updateLevelTime(
                 rememberUserName,
                 level,
                 timeFinish);
             if (updateLevel.code == 1) {
 
-                let updateTimePlay = db.updateTimePlay(rememberUserName, 0, 0, 0);
+                let updateTimePlay = await db.updateTimePlay(rememberUserName, 0, 0, 0);
                 if (updateTimePlay.code == 1) {
                     return true;
                 }
@@ -143,7 +147,7 @@ function winGame(user, level, time) {
         }
     }
 }
-exports.move = function(req, res, next) {
+exports.move = async function(req, res, next) {
     function getIndexByValue(err, value) {
         for (let index = 0; index < arr.length; index++) {
             if (arr[index] == value) return index;
@@ -158,7 +162,12 @@ exports.move = function(req, res, next) {
         let moveStatus = req.query.moveStatus;
         //if (level >= 3 && level <= 6) {
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
-            let arrayIndex = JSON.parse(db.getPlayMatrixByUser(rememberUserName));
+            let arrayIndex;
+            let getMatrix = await db.getPlayMatrixByUser(rememberUserName);
+            if (getMatrix.code == 1) {
+                arrayIndex = getMatrix.data;
+            }
+
             if (arrayIndex && arrayIndex.length != 0) {
                 let level = Math.floor(Math.sqrt(arrayIndex.length + 1));
                 let emptyImageLocation = arrayIndex[level - 1];

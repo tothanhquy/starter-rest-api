@@ -2,7 +2,7 @@ var AccountModel = require("../model/AccountModel");
 var GenaralMethod = require("../GenaralMethod");
 var Controller = require("./Controller");
 
-exports.loadDataCharts = function(req, res, next) {
+exports.loadDataCharts = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
@@ -10,16 +10,16 @@ exports.loadDataCharts = function(req, res, next) {
         let rememberAccessToken = req.query.rememberUserName;
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
 
-            let level3 = db.getChartByLevel(3);
+            let level3 = await db.getChartByLevel(3);
             resFunc.data.level3x3 = level3.data;
-            let level4 = db.getChartByLevel(4);
+            let level4 = await db.getChartByLevel(4);
             resFunc.data.level4x4 = level4.data;
-            let level5 = db.getChartByLevel(5);
+            let level5 = await db.getChartByLevel(5);
             resFunc.data.level5x5 = level5.data;
-            let level6 = db.getChartByLevel(6);
+            let level6 = await db.getChartByLevel(6);
             resFunc.data.level6x6 = level6.data;
 
-            let timePlay = db.getTimePlayByUser(rememberUserName);
+            let timePlay = await db.getTimePlayByUser(rememberUserName);
 
             resFunc.playPause = false;
             if (timePlay.code == 1) {

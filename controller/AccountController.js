@@ -2,7 +2,8 @@ var AccountModel = require("../model/AccountModel");
 var GenaralMethod = require("../GenaralMethod");
 var Controller = require("./Controller");
 
-exports.addAccount = function(req, res, next) {
+
+exports.addAccount = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
@@ -11,7 +12,7 @@ exports.addAccount = function(req, res, next) {
 
         pass_word = Controller.hashPassword(pass_word);
 
-        let resDB = db.addAccount(user_name, pass_word);
+        let resDB = await db.addAccount(user_name, pass_word);
         resFunc.code = resDB.code;
         resFunc.error = resDB.error;
 
@@ -21,19 +22,21 @@ exports.addAccount = function(req, res, next) {
     res.send(JSON.stringify(resFunc));
 }
 
-exports.login = function(req, res, next) {
+exports.login = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
         let user_name = req.query.user;
         let pass_word = req.query.pass;
+        let resDB = await db.getPasswordByUser(user_name);
+        // res.send(JSON.stringify(resDB));
 
-        let resDB = db.getPasswordByUser(user_name);
+        // res.send('20');
         if (resDB.code == 1) {
             if (Controller.verifyPassword(pass_word, resDB.data)) {
                 //success
                 let accessToken = GenaralMethod.generatorString(50);
-                let resUpdAT = db.updateAccessToken(user_name, accessToken);
+                let resUpdAT = await db.updateAccessToken(user_name, accessToken);
                 if (resUpdAT.code == 1) {
                     resFunc.code = 1;
                     resFunc.data = {
@@ -56,7 +59,7 @@ exports.login = function(req, res, next) {
     res.send(JSON.stringify(resFunc));
 }
 
-exports.changePassword = function(req, res, next) {
+exports.changePassword = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
@@ -66,12 +69,12 @@ exports.changePassword = function(req, res, next) {
         let rememberUserName = req.query.rememberUserName;
         let rememberAccessToken = req.query.rememberUserName;
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
-            let resDB = db.getPasswordByUser(rememberUserName);
+            let resDB = await db.getPasswordByUser(rememberUserName);
             if (resDB.code == 1) {
                 if (Controller.verifyPassword(oldPassWord, resDB.data)) {
                     //success
                     hash = Controller.hashPassword(newPassWord);
-                    let resUpdPass = db.updatePassword(rememberUserName, hash);
+                    let resUpdPass = await db.updatePassword(rememberUserName, hash);
                     if (resUpdPass.code == 1) {
                         resFunc.code = 1;
                         resFunc.data = {
@@ -98,7 +101,7 @@ exports.changePassword = function(req, res, next) {
     res.send(JSON.stringify(resFunc));
 }
 
-exports.logout = function(req, res, next) {
+exports.logout = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
@@ -106,7 +109,7 @@ exports.logout = function(req, res, next) {
         let rememberAccessToken = req.query.rememberUserName;
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let accessToken = GenaralMethod.generatorString(50);
-            let resUpdAT = db.updateAccessToken(user_name, accessToken);
+            let resUpdAT = await db.updateAccessToken(user_name, accessToken);
             if (resUpdAT.code == 1) {
                 resFunc.code = 1;
             }
