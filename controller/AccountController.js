@@ -25,9 +25,11 @@ exports.addAccount = async function(req, res, next) {
 
 exports.login = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
+    let asasas;
     try {
         let db = new AccountModel.AccountModel();
         let params = Controller.getParams(req.query);
+        asasas = JSON.stringify(params);
         let user_name = params.user;
         let pass_word = params.pass;
         let resDB = await db.getPasswordByUser(user_name);
@@ -58,7 +60,7 @@ exports.login = async function(req, res, next) {
             }
         }
     } catch (error) {
-        resFunc.error = "error" + error;
+        resFunc.error = "error" + error + asasas;
     }
     res.send(JSON.stringify(resFunc));
 }

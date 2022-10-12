@@ -67,5 +67,7 @@ exports.executeQueryPromise = function(sql, sqlAgruments) {
 }
 
 exports.replaceSpecialCharacter = function(str) {
-    return str.replace(/[&\/\\#,+()$~%'":*?<>{}]/g, '_');
+    if (str)
+        return str.replace(/[&\/\\#,+()$~%'":*?<>{}]/g, '_');
+    return "";
 }
