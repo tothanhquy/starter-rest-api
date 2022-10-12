@@ -28,7 +28,7 @@ exports.login = async function(req, res, next) {
     let asasas;
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.query);
+        // let params = Controller.getParams(req.query);
 
         resFunc.error = "asdasd" + JSON.stringify(req.query);
         res.send(JSON.stringify(resFunc));
