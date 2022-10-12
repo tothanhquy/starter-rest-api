@@ -7,7 +7,7 @@ exports.addAccount = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.query);
+        let params = Controller.getParams(req.body);
         let user_name = params.user;
         let pass_word = params.pass;
 
@@ -25,13 +25,13 @@ exports.addAccount = async function(req, res, next) {
 
 exports.login = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
-    let asasas;
+    // let asasas;
     try {
         let db = new AccountModel.AccountModel();
-        // let params = Controller.getParams(req.query);
+        let params = Controller.getParams(req.body);
 
-        resFunc.error = "asdasd" + JSON.stringify(req.body);
-        res.send(JSON.stringify(resFunc));
+        // resFunc.error = "asdasd" + JSON.stringify(req.body);
+        // res.send(JSON.stringify(resFunc));
 
         let user_name = params.user;
         let pass_word = params.pass;
@@ -63,7 +63,7 @@ exports.login = async function(req, res, next) {
             }
         }
     } catch (error) {
-        resFunc.error = "error" + error + asasas;
+        resFunc.error = "error" + error;
     }
     res.send(JSON.stringify(resFunc));
 }
@@ -72,7 +72,7 @@ exports.changePassword = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.query);
+        let params = Controller.getParams(req.body);
         //let user_name = params.user;
         let oldPassWord = params.oldPassword;
         let newPassWord = params.newPassword;
@@ -115,7 +115,7 @@ exports.logout = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.query);
+        let params = Controller.getParams(req.body);
 
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
