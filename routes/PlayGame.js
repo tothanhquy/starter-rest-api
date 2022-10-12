@@ -7,5 +7,6 @@ var PlayScreenController = require("../controller/PlayScreenController");
 router.all('/create', PlayScreenController.createGamePlay);
 router.all('/load', PlayScreenController.loadGamePlay);
 router.all('/move', PlayScreenController.move);
+router.all('/pause', PlayScreenController.pause);
 
 module.exports = router;

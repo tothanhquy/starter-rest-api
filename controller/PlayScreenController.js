@@ -27,7 +27,7 @@ exports.createGamePlay = async function(req, res, next) {
         let params = Controller.getParams(req.query);
 
         let rememberUserName = params.rememberUserName;
-        let rememberAccessToken = params.rememberUserName;
+        let rememberAccessToken = params.rememberAccessToken;
         let level = Number.parseInt(params.level);
         if (level >= 3 && level <= 6) {
             if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
@@ -42,6 +42,8 @@ exports.createGamePlay = async function(req, res, next) {
                             resFunc.data.imageName = imageName;
                             resFunc.data.metrix = arrayIndex;
                             resFunc.data.timeStart = timeStart;
+                            resFunc.data.timeMinus = timeMinusDefault;
+                            resFunc.data.level = level;
                             resFunc.code = 1;
                         }
                     }
@@ -64,7 +66,7 @@ exports.loadGamePlay = async function(req, res, next) {
         let params = Controller.getParams(req.query);
 
         let rememberUserName = params.rememberUserName;
-        let rememberAccessToken = params.rememberUserName;
+        let rememberAccessToken = params.rememberAccessToken;
 
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let arrayIndex;
@@ -152,7 +154,7 @@ async function winGame(user, level, time) {
     }
 }
 exports.move = async function(req, res, next) {
-    function getIndexByValue(err, value) {
+    function getIndexByValue(arr, value) {
         for (let index = 0; index < arr.length; index++) {
             if (arr[index] == value) return index;
         }
@@ -164,58 +166,107 @@ exports.move = async function(req, res, next) {
         let params = Controller.getParams(req.query);
 
         let rememberUserName = params.rememberUserName;
-        let rememberAccessToken = params.rememberUserName;
+        let rememberAccessToken = params.rememberAccessToken;
         let moveStatus = params.moveStatus;
         //if (level >= 3 && level <= 6) {
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
-            let arrayIndex;
-            let getMatrix = await db.getPlayMatrixByUser(rememberUserName);
-            if (getMatrix.code == 1) {
-                arrayIndex = getMatrix.data;
-            }
+            //check pause
+            let timePlay = await db.getTimePlayByUser(rememberUserName);
+            if (timePlay.data.code == 1) {
 
-            if (arrayIndex && arrayIndex.length != 0) {
-                let level = Math.floor(Math.sqrt(arrayIndex.length + 1));
-                let emptyImageLocation = arrayIndex[level - 1];
-                let swapLocation = emptyImageLocation;
-                if (moveStatus == "left") {
-                    if ((emptyImageLocation % level) != (level - 1)) {
-                        swapLocation = emptyImageLocation + 1;
+                if (timePlay.data.timePause !== 0) {
+                    //pause in last
+                    resFunc.error = "error";
+                } else {
+                    let arrayIndex;
+                    let getMatrix = await db.getPlayMatrixByUser(rememberUserName);
+                    if (getMatrix.code == 1) {
+                        arrayIndex = getMatrix.data;
                     }
-                } else if (moveStatus == "right") {
-                    if ((emptyImageLocation % level) != 0) {
-                        swapLocation = emptyImageLocation - 1;
-                    }
-                } else if (moveStatus == "up") {
-                    if (Math.floor(emptyImageLocation / level) != (level - 1)) {
-                        swapLocation = emptyImageLocation - level;
-                    }
-                } else if (moveStatus == "down") {
-                    if (Math.floor(emptyImageLocation / level) != 0) {
-                        swapLocation = emptyImageLocation + level;
-                    }
-                }
-                if (["left", "right", "up", "down"].indexOf(moveStatus) != -1) {
 
-                    let swapIndexInMatrix = getIndexByValue(arrayIndex, swapLocation);
-                    //swap
-                    arrayIndex[swapIndexInMatrix] = emptyImageLocation;
-                    arrayIndex[level - 1] = swapLocation;
+                    if (arrayIndex && arrayIndex.length != 0) {
+                        let level = Math.floor(Math.sqrt(arrayIndex.length + 1));
+                        let emptyImageLocation = arrayIndex[level - 1];
+                        let swapLocation = emptyImageLocation;
+                        if (moveStatus == "left") {
+                            if ((emptyImageLocation % level) != (level - 1)) {
+                                swapLocation = emptyImageLocation + 1;
+                            }
+                        } else if (moveStatus == "right") {
+                            if ((emptyImageLocation % level) != 0) {
+                                swapLocation = emptyImageLocation - 1;
+                            }
+                        } else if (moveStatus == "up") {
+                            if (Math.floor(emptyImageLocation / level) != (level - 1)) {
+                                swapLocation = emptyImageLocation - level;
+                            }
+                        } else if (moveStatus == "down") {
+                            if (Math.floor(emptyImageLocation / level) != 0) {
+                                swapLocation = emptyImageLocation + level;
+                            }
+                        }
+                        if (["left", "right", "up", "down"].indexOf(moveStatus) != -1) {
 
-                    resFunc.data.matrix = arrayIndex;
+                            let swapIndexInMatrix = getIndexByValue(arrayIndex, swapLocation);
+                            //swap
+                            arrayIndex[swapIndexInMatrix] = emptyImageLocation;
+                            arrayIndex[level - 1] = swapLocation;
 
-                    if (checkWin(resFunc.data.matrix) && winGame(rememberUserName, level)) {
-                        //win
-                        resFunc.data.isWin = true;
-                    } else {
-                        resFunc.data.isWin = false;
+                            resFunc.data.matrix = arrayIndex;
+
+                            if (checkWin(resFunc.data.matrix) && winGame(rememberUserName, level)) {
+                                //win
+                                resFunc.data.isWin = true;
+                            } else {
+                                resFunc.data.isWin = false;
+                            }
+                            resFunc.code = 1;
+                        }
                     }
-                    resFunc.code = 1;
                 }
             }
         } else {
             resFunc.error = "not_login";
         }
+    } catch (error) {
+        resFunc.error = "error";
+    }
+    res.send(JSON.stringify(resFunc));
+}
+
+exports.pause = async function(req, res, next) {
+    let resFunc = GenaralMethod.getResRouterObject();
+    try {
+        let db = new AccountModel.AccountModel();
+        let params = Controller.getParams(req.query);
+
+        let rememberUserName = params.rememberUserName;
+        let rememberAccessToken = params.rememberAccessToken;
+
+        if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
+            let timePlay = await db.getTimePlayByUser(rememberUserName);
+            if (timePlay.data.code == 1) {
+
+                if (timePlay.data.timePause !== 0) {
+                    //pause in last
+                    resFunc.error = "error";
+                } else {
+                    //pause now
+                    let timeNow = Date.now();
+                    let updateTimePlay = await db.updateTimePlay(
+                        rememberUserName,
+                        timePlay.data.timeStart,
+                        timeNow,
+                        timePlay.data.timeMinus);
+                    if (updateTimePlay.code == 1) {
+                        resFunc.code = 1;
+                    }
+                }
+            }
+        } else {
+            resFunc.error = "not_login";
+        }
+
     } catch (error) {
         resFunc.error = "error";
     }

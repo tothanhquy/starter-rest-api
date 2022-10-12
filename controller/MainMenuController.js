@@ -8,7 +8,7 @@ exports.loadDataCharts = async function(req, res, next) {
         let db = new AccountModel.AccountModel();
         let params = Controller.getParams(req.query);
         let rememberUserName = params.rememberUserName;
-        let rememberAccessToken = params.rememberUserName;
+        let rememberAccessToken = params.rememberAccessToken;
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
 
             let level3 = await db.getChartByLevel(3);
@@ -22,10 +22,10 @@ exports.loadDataCharts = async function(req, res, next) {
 
             let timePlay = await db.getTimePlayByUser(rememberUserName);
 
-            resFunc.playPause = false;
+            resFunc.data.playPause = false;
             if (timePlay.code == 1) {
                 if (timePlay.timeStart != 0) {
-                    resFunc.playPause = true;
+                    resFunc.data.playPause = true;
                 }
             }
             resFunc.code = 1;
