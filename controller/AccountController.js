@@ -38,8 +38,8 @@ exports.login = async function(req, res, next) {
         // res.send(JSON.stringify(params));
         // resFunc = resDB;
         // res.send('20');
-        resFunc.error = "asdasd" + JSON.stringify(resDB);
-        res.send(JSON.stringify(resFunc));
+        // resFunc.error = "asdasd" + JSON.stringify(resDB);
+        // res.send(JSON.stringify(resFunc));
         if (resDB.code == 1) {
             if (Controller.verifyPassword(pass_word, resDB.data)) {
                 //success
