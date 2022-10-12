@@ -31,12 +31,10 @@ exports.AccountModel = class {
                             resFunc.code = 1;
                             resFunc.data = resDB.data[0].pass_word;
                         }
-                    } else {
-                        resFunc.error = "select error";
                     }
                 }
             } catch (err) {
-                resFunc.error = "error" + err;
+                resFunc.error = "error";
             }
             return resolve(resFunc);
         });
