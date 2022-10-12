@@ -6,8 +6,9 @@ exports.loadDataCharts = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let rememberUserName = req.query.rememberUserName;
-        let rememberAccessToken = req.query.rememberUserName;
+        let params = Controller.getParams(req.query);
+        let rememberUserName = params.rememberUserName;
+        let rememberAccessToken = params.rememberUserName;
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
 
             let level3 = await db.getChartByLevel(3);

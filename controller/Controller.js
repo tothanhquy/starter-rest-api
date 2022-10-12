@@ -34,3 +34,11 @@ exports.verifyPassword = async function(pass, hash) {
     });
     return res;
 }
+exports.getParams = function(source) {
+    let res = Object.assign(source);
+    // res = res.map(a => decodeURI(a));
+    Object.keys(res).forEach(function(key, index) {
+        res[key] = decodeURI(res[key]);
+    });
+    return res;
+}

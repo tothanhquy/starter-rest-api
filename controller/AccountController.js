@@ -7,8 +7,9 @@ exports.addAccount = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let user_name = req.query.user;
-        let pass_word = req.query.pass;
+        let params = Controller.getParams(req.query);
+        let user_name = params.user;
+        let pass_word = params.pass;
 
         pass_word = Controller.hashPassword(pass_word);
 
@@ -26,11 +27,12 @@ exports.login = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let user_name = req.query.user;
-        let pass_word = req.query.pass;
+        let params = Controller.getParams(req.query);
+        let user_name = params.user;
+        let pass_word = params.pass;
         let resDB = await db.getPasswordByUser(user_name);
-        // res.send(JSON.stringify(resDB));
-
+        // res.send(JSON.stringify(params));
+        // resFunc = resDB;
         // res.send('20');
         if (resDB.code == 1) {
             if (Controller.verifyPassword(pass_word, resDB.data)) {
@@ -54,7 +56,7 @@ exports.login = async function(req, res, next) {
             }
         }
     } catch (error) {
-        resFunc.error = "error";
+        resFunc.error = "error" + error;
     }
     res.send(JSON.stringify(resFunc));
 }
@@ -63,11 +65,12 @@ exports.changePassword = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        //let user_name = req.query.user;
-        let oldPassWord = req.query.oldPassword;
-        let newPassWord = req.query.newPassword;
-        let rememberUserName = req.query.rememberUserName;
-        let rememberAccessToken = req.query.rememberUserName;
+        let params = Controller.getParams(req.query);
+        //let user_name = params.user;
+        let oldPassWord = params.oldPassword;
+        let newPassWord = params.newPassword;
+        let rememberUserName = params.rememberUserName;
+        let rememberAccessToken = params.rememberUserName;
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let resDB = await db.getPasswordByUser(rememberUserName);
             if (resDB.code == 1) {
@@ -105,8 +108,10 @@ exports.logout = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let rememberUserName = req.query.rememberUserName;
-        let rememberAccessToken = req.query.rememberUserName;
+        let params = Controller.getParams(req.query);
+
+        let rememberUserName = params.rememberUserName;
+        let rememberAccessToken = params.rememberUserName;
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let accessToken = GenaralMethod.generatorString(50);
             let resUpdAT = await db.updateAccessToken(user_name, accessToken);

@@ -24,9 +24,11 @@ exports.createGamePlay = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let rememberUserName = req.query.rememberUserName;
-        let rememberAccessToken = req.query.rememberUserName;
-        let level = Number.parseInt(req.query.level);
+        let params = Controller.getParams(req.query);
+
+        let rememberUserName = params.rememberUserName;
+        let rememberAccessToken = params.rememberUserName;
+        let level = Number.parseInt(params.level);
         if (level >= 3 && level <= 6) {
             if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
                 let imageName = getRandomImageName();
@@ -59,8 +61,10 @@ exports.loadGamePlay = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let rememberUserName = req.query.rememberUserName;
-        let rememberAccessToken = req.query.rememberUserName;
+        let params = Controller.getParams(req.query);
+
+        let rememberUserName = params.rememberUserName;
+        let rememberAccessToken = params.rememberUserName;
 
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let arrayIndex;
@@ -157,9 +161,11 @@ exports.move = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let rememberUserName = req.query.rememberUserName;
-        let rememberAccessToken = req.query.rememberUserName;
-        let moveStatus = req.query.moveStatus;
+        let params = Controller.getParams(req.query);
+
+        let rememberUserName = params.rememberUserName;
+        let rememberAccessToken = params.rememberUserName;
+        let moveStatus = params.moveStatus;
         //if (level >= 3 && level <= 6) {
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let arrayIndex;
