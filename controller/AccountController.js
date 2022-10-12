@@ -29,7 +29,7 @@ exports.login = async function(req, res, next) {
     try {
         let db = new AccountModel.AccountModel();
         let params = Controller.getParams(req.query);
-        asasas = JSON.stringify(params);
+        asasas = JSON.stringify(req.query);
         let user_name = params.user;
         let pass_word = params.pass;
         let resDB = await db.getPasswordByUser(user_name);
