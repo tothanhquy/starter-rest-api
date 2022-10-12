@@ -30,8 +30,8 @@ exports.login = async function(req, res, next) {
         let db = new AccountModel.AccountModel();
         let params = Controller.getParams(req.body);
 
-        resFunc.error = "asdasd" + JSON.stringify(params);
-        res.send(JSON.stringify(resFunc));
+        // resFunc.error = "asdasd" + JSON.stringify(params);
+        // res.send(JSON.stringify(resFunc));
 
         let user_name = params.user;
         let pass_word = params.pass;
