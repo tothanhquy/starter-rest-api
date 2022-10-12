@@ -44,12 +44,14 @@ exports.login = async function(req, res, next) {
                     resFunc.data = {
                         access_token: accessToken
                     };
+                } else {
+                    resFunc.code = "update assess error";
                 }
             } else {
                 resFunc.error = "wrong_password";
             }
         } else {
-            resFunc.code = resDB.code;
+            resFunc.code = resDB.code + "get pass error";
             resFunc.error = resDB.error;
             if (resFunc.error == "empty") {
                 resFunc.error = "not_exist_account";
