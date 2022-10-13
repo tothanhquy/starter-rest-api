@@ -10,11 +10,9 @@ exports.loadDataCharts = async function(req, res, next) {
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
 
-        let asasas = Controller.checkRemember(rememberUserName, rememberAccessToken);
-        return res.send(asasas);
-        // return res.send(JSON.stringify(rememberAccessToken));
+        let remember = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
-        if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
+        if (remember.code == 1) {
 
             let level3 = await db.getChartByLevel(3);
             resFunc.data.level3x3 = level3.data;
@@ -42,5 +40,5 @@ exports.loadDataCharts = async function(req, res, next) {
     } catch (error) {
         resFunc.error = "error";
     }
-    //res.send(JSON.stringify(resFunc));
+    res.send(JSON.stringify(resFunc));
 }

@@ -124,8 +124,6 @@ exports.AccountModel = class {
                     if (resDB.code === 1 && resDB.data.length !== 0) {
                         if (accessToken === resDB.data[0].access_token) {
                             resFunc.code = 1;
-
-                            resFunc.error = resDB.data[0].access_token + "|" + accessToken;
                         }
                     }
                 }

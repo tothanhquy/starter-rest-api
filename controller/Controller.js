@@ -4,15 +4,16 @@ var bcrypt = require("bcryptjs");
 const { json } = require("express");
 
 exports.checkRemember = function(userName, accessToken) {
-    // let db = new AccountModel.AccountModel();
-    return userName + "|" + accessToken;
+    return new Promise(async(resolve, reject) => {
+        let db = new AccountModel.AccountModel();
 
-    // let resDb = await db.checkAccessToken(userName, accessToken);
-    // if (resDb.code == 1) {
-    //     return true;
-    // } else {
-    //     return false;
-    // }
+        let resDb = await db.checkAccessToken(userName, accessToken);
+        if (resDb.code == 1) {
+            return resolve(true);
+        } else {
+            return resolve(false);
+        }
+    });
 }
 
 exports.hashPassword = function(pass) {
