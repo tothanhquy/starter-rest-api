@@ -119,7 +119,7 @@ exports.logout = async function(req, res, next) {
         let rememberAccessToken = params.rememberAccessToken;
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let accessToken = GenaralMethod.generatorString(50);
-            let resUpdAT = await db.updateAccessToken(user_name, accessToken);
+            let resUpdAT = await db.updateAccessToken(rememberUserName, accessToken);
             if (resUpdAT.code == 1) {
                 resFunc.code = 1;
             }
