@@ -117,6 +117,9 @@ exports.logout = async function(req, res, next) {
 
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
+        resFunc.error = rememberAccessToken;
+        return res.send(JSON.stringify(resFunc));
+
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let accessToken = GenaralMethod.generatorString(50);
             let resUpdAT = await db.updateAccessToken(rememberUserName, accessToken);

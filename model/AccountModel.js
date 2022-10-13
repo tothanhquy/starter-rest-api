@@ -113,6 +113,8 @@ exports.AccountModel = class {
         return new Promise(async(resolve, reject) => {
             let resFunc = GenaralMethod.getResModelObject();
             user = Model.replaceSpecialCharacter(user);
+            resFunc.error = accessToken;
+            return resolve(resFunc);
 
             try {
                 if (this.checkValidUserName(user) === false) {
