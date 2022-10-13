@@ -4,13 +4,13 @@ var Controller = require("./Controller");
 
 exports.loadDataCharts = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
-    return res.send(JSON.stringify("78"));
     try {
         let db = new AccountModel.AccountModel();
         let params = Controller.getParams(req);
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
 
+        return res.send(JSON.stringify(rememberAccessToken));
 
         return res.send(JSON.stringify(Controller.checkRemember(res, rememberUserName, rememberAccessToken)));
 
