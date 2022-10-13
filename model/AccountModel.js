@@ -10,13 +10,13 @@ exports.AccountModel = class {
     getPasswordByUser(user) {
         return new Promise(async(resolve, reject) => {
             let resFunc = GenaralMethod.getResModelObject();
-            resFunc.error = user;
-            return resolve(resFunc);
+            // resFunc.error = user;
+            // return resolve(resFunc);
             try {
                 user = Model.replaceSpecialCharacter(user);
                 // return resolve(456);
                 if (this.checkValidUserName(user) === false) {
-                    resFunc.error = "unvalid_value";
+                    resFunc.error = "unvalid_value" + "asd";
                 } else {
                     let sql = "select pass_word from account where user_name like ?";
                     let sqlAgruments = [user];
