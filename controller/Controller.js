@@ -1,9 +1,9 @@
 var GenaralMethod = require("../GenaralMethod");
-var Account = require("./AccountController");
+var AccountModel = require("../model/AccountModel");
 var bcrypt = require("bcryptjs");
 
 exports.checkRemember = async function(userName, accessToken) {
-    let db = new Account.AccountModel();
+    let db = new AccountModel.AccountModel();
 
     let resDb = await db.checkAccessToekn(userName, accessToken);
     if (resDb.code == 1) {
