@@ -16,7 +16,7 @@ exports.AccountModel = class {
                 user = Model.replaceSpecialCharacter(user);
                 // return resolve(456);
                 if (this.checkValidUserName(user) === false) {
-                    resFunc.error = "unvalid_value" + "asd";
+                    resFunc.error = "unvalid_value" + "user";
                 } else {
                     let sql = "select pass_word from account where user_name like ?";
                     let sqlAgruments = [user];
