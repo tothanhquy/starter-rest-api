@@ -7,12 +7,12 @@ exports.checkRemember = async function(userName, accessToken) {
     let db = new AccountModel.AccountModel();
     return userName + "|" + accessToken;
 
-    let resDb = await db.checkAccessToken(userName, accessToken);
-    if (resDb.code == 1) {
-        return true;
-    } else {
-        return false;
-    }
+    // let resDb = await db.checkAccessToken(userName, accessToken);
+    // if (resDb.code == 1) {
+    //     return true;
+    // } else {
+    //     return false;
+    // }
 }
 
 exports.hashPassword = function(pass) {
