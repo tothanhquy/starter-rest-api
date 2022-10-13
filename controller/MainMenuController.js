@@ -12,7 +12,7 @@ exports.loadDataCharts = async function(req, res, next) {
 
         //return res.send(JSON.stringify(rememberAccessToken));
 
-        return res.send(JSON.stringify(Controller.checkRemember(rememberUserName, rememberAccessToken)));
+        return res.send(Controller.checkRemember(rememberUserName, rememberAccessToken));
 
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
 
@@ -42,5 +42,5 @@ exports.loadDataCharts = async function(req, res, next) {
     } catch (error) {
         resFunc.error = "error";
     }
-    res.send(JSON.stringify(resFunc));
+    //res.send(JSON.stringify(resFunc));
 }
