@@ -46,8 +46,8 @@ exports.getParams = function(req) {
     // } else {
     //     res = Object.assign(req.query);
     // }
-    // res = Object.assign(req.body);
-    res = Object.assign(req.query);
+    res = Object.assign(req.body);
+    // res = Object.assign(req.query);
     Object.keys(res).forEach(function(key, index) {
         res[key] = decodeURI(res[key]);
     });
