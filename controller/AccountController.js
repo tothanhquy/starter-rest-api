@@ -39,7 +39,7 @@ exports.login = async function(req, res, next) {
         // resFunc.error = "asdasd" + JSON.stringify(resDB);
         // res.send(JSON.stringify(resFunc));
         if (resDB.code == 1) {
-            if (Controller.verifyPassword(pass_word, resDB.data)) {
+            if (Controller.verifyPassword(pass_word, resDB.data) === true) {
                 //success
                 let accessToken = GenaralMethod.generatorString(50);
                 let resUpdAT = await db.updateAccessToken(user_name, accessToken);

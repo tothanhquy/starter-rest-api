@@ -43,6 +43,8 @@ exports.AccountModel = class {
     addAccount(user, password) {
         return new Promise(async(resolve, reject) => {
             let resFunc = GenaralMethod.getResModelObject();
+            //resFunc.error = user + "|" + password;
+            //return resolve(resFunc);
             try {
                 if (this.checkValidUserNameAndPassword(user, password) === false) {
                     resFunc.error = "unvalid_value";
@@ -381,7 +383,7 @@ exports.AccountModel = class {
     checkValidUserName(user) {
         if (
             user.length > 20 ||
-            (user).indexOf(' ') !== -1 ||
+            user.indexOf(' ') !== -1 ||
             user.length === 0
         ) {
             return false;
@@ -391,7 +393,7 @@ exports.AccountModel = class {
     checkValidPassword(pass) {
         if (
             pass.length > 300 ||
-            (pass).indexOf(' ') !== -1 ||
+            pass.indexOf(' ') !== -1 ||
             pass.length === 0
         ) {
             return false;

@@ -1,6 +1,6 @@
 var GenaralMethod = require("../GenaralMethod");
 var Account = require("./AccountController");
-var bcrypt = require("bcrypt");
+var bcrypt = require("bcryptjs");
 
 exports.checkRemember = async function(userName, accessToken) {
     let db = new Account.AccountModel();
@@ -13,26 +13,31 @@ exports.checkRemember = async function(userName, accessToken) {
     }
 }
 
-exports.hashPassword = async function(pass) {
-    let res = await new Promise((resolve, reject) => {
-        bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(pass, salt, function(err, hash) {
-                return resolve(hash);
-            });
-        })
-    });
-    return res;
+exports.hashPassword = function(pass) {
+    // let res = await new Promise((resolve, reject) => {
+    //     bcrypt.genSalt(10, (err, salt) => {
+    //         bcrypt.hash(pass, salt, function(err, hash) {
+    //             if (err) return resolve("error");
+    //             return resolve(hash);
+    //         });
+    //     })
+    // });
+    // // let salt = await bcrypt.genSalt(10);
+    // // let res = await bcrypt.hash(pass, salt);
+    // return res;
+    return bcrypt.hashSync(pass, 10);
 }
-exports.verifyPassword = async function(pass, hash) {
-    let res = await new Promise((resolve, reject) => {
-        bcrypt.compare(pass, hash, function(err, result) {
-            if (result) {
-                return resolve(true);
-            }
-            return resolve(false);
-        });
-    });
-    return res;
+exports.verifyPassword = function(pass, hash) {
+    // let res = await new Promise(async(resolve, reject) => {
+    //     bcrypt.compare(pass, hash, function(err, result) {
+    //         if (result) {
+    //             return resolve(true);
+    //         }
+    //         return resolve(false);
+    //     });
+    // });
+    // return res;
+    return bcrypt.compareSync(pass, hash);
 }
 exports.getParams = function(req) {
     let res;
