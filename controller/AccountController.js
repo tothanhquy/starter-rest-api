@@ -73,7 +73,7 @@ exports.login = async function(req, res, next) {
             }
         }
     } catch (error) {
-        resFunc.error = "error" + error;
+        resFunc.error = "error";
     }
     res.send(JSON.stringify(resFunc));
 }

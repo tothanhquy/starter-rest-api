@@ -56,7 +56,7 @@ exports.createGamePlay = async function(req, res, next) {
         }
 
     } catch (error) {
-        resFunc.error = "error";
+        resFunc.error = "error" + err;
     }
     res.send(JSON.stringify(resFunc));
 }
