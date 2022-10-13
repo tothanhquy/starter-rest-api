@@ -11,11 +11,17 @@ exports.addAccount = async function(req, res, next) {
         let user_name = params.user;
         let pass_word = params.pass;
 
-        pass_word = Controller.hashPassword(pass_word);
+        if (!db.checkValidPassword(pass_word)) {
+            resFunc.error = "unvalid_value";
+        } else {
+            pass_word = Controller.hashPassword(pass_word);
 
-        let resDB = await db.addAccount(user_name, pass_word);
-        resFunc.code = resDB.code;
-        resFunc.error = resDB.error;
+            let resDB = await db.addAccount(user_name, pass_word);
+            resFunc.code = resDB.code;
+            resFunc.error = resDB.error;
+
+        }
+
 
     } catch (error) {
         resFunc.error = "error";
@@ -32,32 +38,38 @@ exports.login = async function(req, res, next) {
 
         let user_name = params.user;
         let pass_word = params.pass;
-        let resDB = await db.getPasswordByUser(user_name);
-        // res.send(JSON.stringify(req));
-        // resFunc = resDB;
-        // res.send('20');
-        // resFunc.error = "asdasd" + JSON.stringify(resDB);
-        // res.send(JSON.stringify(resFunc));
-        if (resDB.code == 1) {
-            if (Controller.verifyPassword(pass_word, resDB.data) === true) {
-                //success
-                let accessToken = GenaralMethod.generatorString(50);
-                let resUpdAT = await db.updateAccessToken(user_name, accessToken);
-                if (resUpdAT.code == 1) {
-                    resFunc.code = 1;
-                    resFunc.data = {
-                        access_token: accessToken
-                    };
+
+        if (!db.checkValidPassword(pass_word)) {
+            resFunc.error = "unvalid_value";
+        } else {
+
+            let resDB = await db.getPasswordByUser(user_name);
+            // res.send(JSON.stringify(req));
+            // resFunc = resDB;
+            // res.send('20');
+            // resFunc.error = "asdasd" + JSON.stringify(resDB);
+            // res.send(JSON.stringify(resFunc));
+            if (resDB.code == 1) {
+                if (Controller.verifyPassword(pass_word, resDB.data) === true) {
+                    //success
+                    let accessToken = GenaralMethod.generatorString(50);
+                    let resUpdAT = await db.updateAccessToken(user_name, accessToken);
+                    if (resUpdAT.code == 1) {
+                        resFunc.code = 1;
+                        resFunc.data = {
+                            access_token: accessToken
+                        };
+                    } else {
+                        resFunc.code = "update assess error";
+                    }
                 } else {
-                    resFunc.code = "update assess error";
+                    resFunc.error = "wrong_password";
                 }
             } else {
-                resFunc.error = "wrong_password";
-            }
-        } else {
-            resFunc.error = resDB.error;
-            if (resFunc.error == "empty") {
-                resFunc.error = "not_exist_account";
+                resFunc.error = resDB.error;
+                if (resFunc.error == "empty") {
+                    resFunc.error = "not_exist_account";
+                }
             }
         }
     } catch (error) {
@@ -74,38 +86,43 @@ exports.changePassword = async function(req, res, next) {
         //let user_name = params.user;
         let oldPassWord = params.oldPassword;
         let newPassWord = params.newPassword;
-        let rememberUserName = params.rememberUserName;
-        let rememberAccessToken = params.rememberAccessToken;
 
-        //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
+        if (!db.checkValidPassword(oldPassWord) || !db.checkValidPassword(newPassWord)) {
+            resFunc.error = "unvalid_value";
+        } else {
 
-        if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
-            let resDB = await db.getPasswordByUser(rememberUserName);
-            if (resDB.code == 1) {
-                if (Controller.verifyPassword(oldPassWord, resDB.data)) {
-                    //success
-                    hash = Controller.hashPassword(newPassWord);
-                    let resUpdPass = await db.updatePassword(rememberUserName, hash);
-                    if (resUpdPass.code == 1) {
-                        resFunc.code = 1;
-                        resFunc.data = {
-                            access_token: accessToken
-                        };
+            let rememberUserName = params.rememberUserName;
+            let rememberAccessToken = params.rememberAccessToken;
+
+            //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
+
+            if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
+                let resDB = await db.getPasswordByUser(rememberUserName);
+                if (resDB.code == 1) {
+                    if (Controller.verifyPassword(oldPassWord, resDB.data)) {
+                        //success
+                        hash = Controller.hashPassword(newPassWord);
+                        let resUpdPass = await db.updatePassword(rememberUserName, hash);
+                        if (resUpdPass.code == 1) {
+                            resFunc.code = 1;
+                            resFunc.data = {
+                                access_token: accessToken
+                            };
+                        }
+                    } else {
+                        resFunc.error = "wrong_password";
                     }
                 } else {
-                    resFunc.error = "wrong_password";
+                    resFunc.code = resDB.code;
+                    resFunc.error = resDB.error;
+                    if (resFunc.error == "empty") {
+                        resFunc.error = "not_exist_account";
+                    }
                 }
             } else {
-                resFunc.code = resDB.code;
-                resFunc.error = resDB.error;
-                if (resFunc.error == "empty") {
-                    resFunc.error = "not_exist_account";
-                }
+                resFunc.error = "not_login";
             }
-        } else {
-            resFunc.error = "not_login";
         }
-
     } catch (error) {
         resFunc.error = "error";
     }
