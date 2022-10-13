@@ -6,7 +6,7 @@ exports.loadDataCharts = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.body);
+        let params = Controller.getParams(req);
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {

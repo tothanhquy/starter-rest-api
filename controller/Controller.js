@@ -34,8 +34,13 @@ exports.verifyPassword = async function(pass, hash) {
     });
     return res;
 }
-exports.getParams = function(source) {
-    let res = Object.assign(source);
+exports.getParams = function(req) {
+    let res;
+    if (req.query == null) {
+        res = Object.assign(req.body);
+    } else {
+        res = Object.assign(req.query);
+    }
     // res = res.map(a => decodeURI(a));
     Object.keys(res).forEach(function(key, index) {
         res[key] = decodeURI(res[key]);

@@ -7,7 +7,7 @@ exports.addAccount = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.body);
+        let params = Controller.getParams(req);
         let user_name = params.user;
         let pass_word = params.pass;
 
@@ -28,12 +28,12 @@ exports.login = async function(req, res, next) {
     // let asasas;
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.body);
+        let params = Controller.getParams(req);
 
         let user_name = params.user;
         let pass_word = params.pass;
         let resDB = await db.getPasswordByUser(user_name);
-        // res.send(JSON.stringify(req.body));
+        // res.send(JSON.stringify(req));
         // resFunc = resDB;
         // res.send('20');
         // resFunc.error = "asdasd" + JSON.stringify(resDB);
@@ -71,7 +71,7 @@ exports.changePassword = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.body);
+        let params = Controller.getParams(req);
         //let user_name = params.user;
         let oldPassWord = params.oldPassword;
         let newPassWord = params.newPassword;
@@ -114,7 +114,7 @@ exports.logout = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.body);
+        let params = Controller.getParams(req);
 
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;

@@ -24,7 +24,7 @@ exports.createGamePlay = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.body);
+        let params = Controller.getParams(req);
 
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
@@ -63,7 +63,7 @@ exports.loadGamePlay = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.body);
+        let params = Controller.getParams(req);
 
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
@@ -163,7 +163,7 @@ exports.move = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.body);
+        let params = Controller.getParams(req);
 
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
@@ -238,7 +238,7 @@ exports.pause = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
     try {
         let db = new AccountModel.AccountModel();
-        let params = Controller.getParams(req.body);
+        let params = Controller.getParams(req);
 
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
