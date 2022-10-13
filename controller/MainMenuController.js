@@ -10,8 +10,7 @@ exports.loadDataCharts = async function(req, res, next) {
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
 
-        resFunc.error = rememberAccessToken;
-        return res.send(JSON.stringify(resFunc));
+        return res.send(JSON.stringify(Controller.checkRemember(rememberUserName, rememberAccessToken)));
 
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
 

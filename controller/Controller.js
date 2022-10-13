@@ -6,6 +6,7 @@ exports.checkRemember = async function(userName, accessToken) {
     let db = new AccountModel.AccountModel();
 
     let resDb = await db.checkAccessToken(userName, accessToken);
+    return resDb;
     if (resDb.code == 1) {
         return true;
     } else {
