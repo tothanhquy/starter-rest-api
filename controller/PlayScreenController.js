@@ -30,9 +30,9 @@ exports.createGamePlay = async function(req, res, next) {
         let rememberAccessToken = params.rememberAccessToken;
         let level = Number.parseInt(params.level);
         if (level >= 3 && level <= 6) {
-            let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
+            //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
-            if (rememberAccount.code == 1) {
+            if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
                 let imageName = getRandomImageName();
                 let arrayIndex = getRandomArrayIndex(level * level);
                 let timeStart = Date.now();
@@ -70,9 +70,9 @@ exports.loadGamePlay = async function(req, res, next) {
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
 
-        let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
+        //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
-        if (rememberAccount.code == 1) {
+        if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let arrayIndex;
             let getMatrix = await db.getPlayMatrixByUser(rememberUserName);
             if (getMatrix.code == 1) {
@@ -173,9 +173,9 @@ exports.move = async function(req, res, next) {
         let rememberAccessToken = params.rememberAccessToken;
         let moveStatus = params.moveStatus;
         //if (level >= 3 && level <= 6) {
-        let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
+        //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
-        if (rememberAccount.code == 1) {
+        if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             //check pause
             let timePlay = await db.getTimePlayByUser(rememberUserName);
             if (timePlay.data.code == 1) {
@@ -249,9 +249,9 @@ exports.pause = async function(req, res, next) {
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
 
-        let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
+        //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
-        if (rememberAccount.code == 1) {
+        if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let timePlay = await db.getTimePlayByUser(rememberUserName);
             if (timePlay.data.code == 1) {
 
