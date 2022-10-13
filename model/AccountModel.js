@@ -10,6 +10,8 @@ exports.AccountModel = class {
     getPasswordByUser(user) {
         return new Promise(async(resolve, reject) => {
             let resFunc = GenaralMethod.getResModelObject();
+            resFunc.error = user;
+            return resolve(resFunc);
             try {
                 user = Model.replaceSpecialCharacter(user);
                 // return resolve(456);
