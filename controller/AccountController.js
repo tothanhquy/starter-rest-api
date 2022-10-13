@@ -55,7 +55,7 @@ exports.login = async function(req, res, next) {
                 resFunc.error = "wrong_password";
             }
         } else {
-            resFunc.code = resDB.code + "get pass error" + JSON.stringify(resDB);
+            resFunc.code = resDB.code;
             resFunc.error = resDB.error;
             if (resFunc.error == "empty") {
                 resFunc.error = "not_exist_account";
