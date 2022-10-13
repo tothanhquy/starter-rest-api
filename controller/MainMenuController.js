@@ -4,14 +4,14 @@ var Controller = require("./Controller");
 
 exports.loadDataCharts = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
-    let asasas = Controller.checkRemember(rememberUserName, rememberAccessToken);
-    return res.send(asasas);
     try {
         let db = new AccountModel.AccountModel();
         let params = Controller.getParams(req);
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
 
+        let asasas = Controller.checkRemember(rememberUserName, rememberAccessToken);
+        return res.send(asasas);
         // return res.send(JSON.stringify(rememberAccessToken));
 
         if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
