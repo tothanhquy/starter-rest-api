@@ -127,7 +127,7 @@ exports.logout = async function(req, res, next) {
             resFunc.error = "not_login";
         }
     } catch (error) {
-        resFunc.error = "error";
+        resFunc.error = "error" + error;
     }
     res.send(JSON.stringify(resFunc));
 }
