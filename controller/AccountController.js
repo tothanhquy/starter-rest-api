@@ -76,7 +76,10 @@ exports.changePassword = async function(req, res, next) {
         let newPassWord = params.newPassword;
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
-        if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
+
+        let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
+
+        if (rememberAccount.code == 1) {
             let resDB = await db.getPasswordByUser(rememberUserName);
             if (resDB.code == 1) {
                 if (Controller.verifyPassword(oldPassWord, resDB.data)) {
@@ -118,8 +121,9 @@ exports.logout = async function(req, res, next) {
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
 
+        let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
-        if (Controller.checkRemember(rememberUserName, rememberAccessToken)) {
+        if (rememberAccount.code == 1) {
             let accessToken = GenaralMethod.generatorString(50);
             let resUpdAT = await db.updateAccessToken(rememberUserName, accessToken);
             if (resUpdAT.code == 1) {

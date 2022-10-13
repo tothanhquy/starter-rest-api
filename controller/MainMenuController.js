@@ -10,9 +10,9 @@ exports.loadDataCharts = async function(req, res, next) {
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
 
-        let remember = await Controller.checkRemember(rememberUserName, rememberAccessToken);
+        let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
-        if (remember.code == 1) {
+        if (rememberAccount.code == 1) {
 
             let level3 = await db.getChartByLevel(3);
             resFunc.data.level3x3 = level3.data;
