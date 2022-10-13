@@ -3,12 +3,11 @@ var AccountModel = require("../model/AccountModel");
 var bcrypt = require("bcryptjs");
 const { json } = require("express");
 
-exports.checkRemember = async function(res, userName, accessToken) {
+exports.checkRemember = async function(userName, accessToken) {
     let db = new AccountModel.AccountModel();
 
     let resDb = await db.checkAccessToken(userName, accessToken);
-    res.send(JSON.stringify(resDb));
-    return resDb;
+    return "resDb";
     if (resDb.code == 1) {
         return true;
     } else {
