@@ -118,7 +118,7 @@ exports.AccountModel = class {
                 if (this.checkValidUserName(user) === false) {
                     resFunc.error = "unvalid_value";
                 } else {
-                    let sql = "select access_token from account where user_name=? and accessToken is not null";
+                    let sql = "select access_token from account where user_name=? and access_token is not null";
                     let sqlAgruments = [user];
                     let resDB = await Model.executeQueryPromise(sql, sqlAgruments);
                     if (resDB.code === 1 && resDB.data.length !== 0) {
