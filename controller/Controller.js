@@ -4,7 +4,7 @@ var bcrypt = require("bcryptjs");
 const { json } = require("express");
 
 exports.checkRemember = async function(userName, accessToken) {
-    let db = new AccountModel.AccountModel();
+    // let db = new AccountModel.AccountModel();
     return userName + "|" + accessToken;
 
     // let resDb = await db.checkAccessToken(userName, accessToken);
