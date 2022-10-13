@@ -176,6 +176,7 @@ exports.AccountModel = class {
                     let resDB = await Model.executeQueryPromise(sql, sqlAgruments);
                     if (resDB.code === 1) {
                         resFunc.code = 1;
+                        resFunc.data = [];
                         resFunc.data = resDB.data.map(a => ({
                             user: a.user_name,
                             point: a[levelSql]
