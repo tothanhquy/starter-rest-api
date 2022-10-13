@@ -122,7 +122,7 @@ exports.AccountModel = class {
                     let sqlAgruments = [user];
                     let resDB = await Model.executeQueryPromise(sql, sqlAgruments);
                     if (resDB.code === 1 && resDB.data.length !== 0) {
-                        if (accessToken === resDB.data[0].accessToken) {
+                        if (accessToken === resDB.data[0].access_token) {
                             resFunc.code = 1;
                         }
                     }
