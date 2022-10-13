@@ -24,7 +24,7 @@ exports.loadDataCharts = async function(req, res, next) {
 
             resFunc.data.playPause = false;
             if (timePlay.code == 1) {
-                if (timePlay.timeStart != 0) {
+                if (timePlay.timeStart > 0) {
                     resFunc.data.playPause = true;
                 }
             }
