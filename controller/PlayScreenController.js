@@ -46,7 +46,7 @@ exports.createGamePlay = async function(req, res, next) {
         if (level >= 3 && level <= 6) {
             //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
             if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
-                // let imageName = getRandomImageName();
+                let imageName = getRandomImageName();
                 // res.send(JSON.stringify("imageName"));
                 // return;
                 let arrayIndex = getRandomArrayIndex(level * level);
