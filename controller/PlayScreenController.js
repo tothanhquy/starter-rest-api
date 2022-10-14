@@ -153,7 +153,7 @@ function winGame(user, level, time) {
         let db = new AccountModel.AccountModel();
         let timePlay = await db.getTimePlayByUser(user);
         if (timePlay.code == 1) {
-            if (timePlay.data.timePause == 0) {
+            if (timePlay.data.timeStart !== 0 && timePlay.data.timePause == 0) {
                 //not pause
                 let timeNow = Date.now();
                 let timeFinish = timeNow - timePlay.data.timeStart - timePlay.data.timeMinus;
@@ -169,12 +169,15 @@ function winGame(user, level, time) {
                         return resovle(true);
                     }
                 }
+                return resovle("error pause or not start");
                 return resovle(false);
             } else {
                 // pausing
+                return resovle("error pause or not start");
                 return resovle(false);
             }
         } else {
+            return resovle("error get time play");
             return resovle(false);
         }
     });
@@ -208,7 +211,7 @@ exports.move = async function(req, res, next) {
             //return;
             if (timePlay.code == 1) {
 
-                if (timePlay.data.timePause !== 0) {
+                if (timePlay.data.timeStart == 0 || timePlay.data.timePause !== 0) {
                     //pause in last
                     resFunc.error = "error";
                 } else {
@@ -249,11 +252,15 @@ exports.move = async function(req, res, next) {
                             resFunc.data.matrix = arrayIndex;
                             let updateMatrix = await db.updatePlayMatrix(rememberUserName, arrayIndex);
                             if (updateMatrix.code == 1) {
-                                if (checkWin(resFunc.data.matrix) && (await winGame(rememberUserName, level)) == true) {
+                                resFunc.data.isWin = false;
+                                if (checkWin(resFunc.data.matrix)) {
                                     //win
-                                    resFunc.data.isWin = true;
-                                } else {
-                                    resFunc.data.isWin = false;
+                                    let updateWin = await winGame(rememberUserName, level);
+                                    if (updateWin === true) {
+                                        resFunc.data.isWin = true;
+                                    } else {
+                                        resFunc.error = updateWin;
+                                    }
                                 }
                                 resFunc.code = 1;
 
