@@ -106,7 +106,7 @@ exports.loadGamePlay = async function(req, res, next) {
                     resFunc.data.imageName = imageName;
 
                     let timePlay = await db.getTimePlayByUser(rememberUserName);
-                    if (timePlay.data.code == 1) {
+                    if (timePlay.code == 1) {
                         if (timePlay.data.timePause == 0) {
                             //not pause
                             resFunc.data.timeStart = timePlay.data.timeStart;
@@ -282,7 +282,7 @@ exports.pause = async function(req, res, next) {
 
         if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let timePlay = await db.getTimePlayByUser(rememberUserName);
-            if (timePlay.data.code == 1) {
+            if (timePlay.code == 1) {
 
                 if (timePlay.data.timePause !== 0) {
                     //pause in last
@@ -305,7 +305,7 @@ exports.pause = async function(req, res, next) {
         }
 
     } catch (error) {
-        resFunc.error = "error";
+        resFunc.error = "error" + error;
     }
     res.send(JSON.stringify(resFunc));
 }
