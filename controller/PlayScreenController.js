@@ -31,9 +31,9 @@ exports.createGamePlay = async function(req, res, next) {
     }
 
     let resFunc = GenaralMethod.getResRouterObject();
-    let imageName = getRandomImageName();
-    res.send(JSON.stringify(imageName));
-    return;
+    // let imageName = getRandomImageName();
+    // res.send(JSON.stringify(imageName));
+    // return;
     try {
         let db = new AccountModel.AccountModel();
         let params = Controller.getParams(req);
