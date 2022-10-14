@@ -200,8 +200,8 @@ exports.move = async function(req, res, next) {
         if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             //check pause
             let timePlay = await db.getTimePlayByUser(rememberUserName);
-            res.send(JSON.stringify(timePlay) + "a");
-            return;
+            //res.send(JSON.stringify(timePlay) + "a");
+            //return;
             if (timePlay.data.code == 1) {
 
                 if (timePlay.data.timePause !== 0) {
