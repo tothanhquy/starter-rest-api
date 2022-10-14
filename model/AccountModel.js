@@ -169,7 +169,7 @@ exports.AccountModel = class {
 
             try {
                 if (Number.isInteger(level) && level <= 6 && level <= 3) {
-                    levelSql = "level" + level + "x" + level;
+                    let levelSql = "level" + level + "x" + level;
                     let sql = "select top 3 user_name," + levelSql + " from account where " + levelSql + " is not null order by " + levelSql + " ASC";;
 
                     let sqlAgruments = [];
@@ -199,7 +199,7 @@ exports.AccountModel = class {
             try {
                 if (this.checkValidUserName(user)) {
                     if (Number.isInteger(level) && Number.isInteger(sec) && level <= 6 && level >= 3) {
-                        levelSql = "level" + level + "x" + level;
+                        let levelSql = "level" + level + "x" + level;
                         let sql = "update account set " + levelSql + "= ? where user_name like ?";
 
                         let sqlAgruments = [sec, user];
