@@ -5,34 +5,31 @@ var Controller = require("./Controller");
 // var fs = require('fs');
 var ListImageResource = require("../data/PlayImageList");
 
+function getRandomImageName() {
+    // let paths = path.join(__dirname, "../public/images/");
+    // return paths;
+    // let listImage = fs.readdirSync(paths);
+    // return listImage;
+    let listImage = ListImageResource.images;
+    return listImage[Math.floor(Math.random() * listImage.length)];
+}
+
+function getRandomArrayIndex(count) {
+    let arrayIndex = new Array(count).fill();
+    arrayIndex = arrayIndex.map((e, i) => i);
+    for (let i = arrayIndex.length - 2; i >= 2; i--) {
+        let j = Math.floor(Math.random() * (i - 1));
+        let temp = arrayIndex[i];
+        arrayIndex[i] = arrayIndex[j];
+        arrayIndex[j] = temp;
+    }
+    return arrayIndex;
+}
+
 exports.createGamePlay = async function(req, res, next) {
-
-
-
-    function getRandomImageName() {
-        // let paths = path.join(__dirname, "../public/images/");
-        // return paths;
-        // let listImage = fs.readdirSync(paths);
-        // return listImage;
-        let listImage = ListImageResource.images;
-        return listImage[Math.floor(Math.random() * listImage.length)];
-    }
-
-    function getRandomArrayIndex(count) {
-        let arrayIndex = new int[count];
-        arrayIndex = arrayIndex.map((a, i) => i);
-        for (let i = arrayIndex.length - 2; i >= 2; i--) {
-            let j = Math.floor(Math.random() * (i - 1));
-            let temp = arrayIndex[i];
-            arrayIndex[i] = arrayIndex[j];
-            arrayIndex[j] = temp;
-        }
-        return arrayIndex;
-    }
-
     let resFunc = GenaralMethod.getResRouterObject();
-    // let imageName = getRandomImageName();
-    // res.send(JSON.stringify(imageName));
+    // let arrayIndex = getRandomArrayIndex(5);
+    // res.send(JSON.stringify(arrayIndex));
     // return;
     try {
         let db = new AccountModel.AccountModel();
