@@ -8,7 +8,7 @@ exports.createGamePlay = async function(req, res, next) {
 
 
     function getRandomImageName() {
-        let listImage = fs.readdirSync("../public/images/");
+        let listImage = fs.readdirSync(__dirname + "../public/images/");
         return listImage[Math.floor(Math.random() * listImage.length)];
     }
 
