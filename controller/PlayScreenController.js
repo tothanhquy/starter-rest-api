@@ -261,7 +261,7 @@ exports.move = async function(req, res, next) {
     } catch (error) {
         resFunc.error = "error" + error;
     }
-    resFunc.error = moveStatus;
+    // resFunc.error = moveStatus;
     res.send(JSON.stringify(resFunc));
 }
 
