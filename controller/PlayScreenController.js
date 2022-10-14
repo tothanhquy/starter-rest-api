@@ -74,7 +74,7 @@ exports.createGamePlay = async function(req, res, next) {
         }
 
     } catch (error) {
-        resFunc.error = "error" + err;
+        resFunc.error = "error";
     }
     res.send(JSON.stringify(resFunc));
 }
@@ -253,7 +253,7 @@ exports.move = async function(req, res, next) {
             resFunc.error = "not_login";
         }
     } catch (error) {
-        resFunc.error = "error";
+        resFunc.error = "error" + error;
     }
     res.send(JSON.stringify(resFunc));
 }
