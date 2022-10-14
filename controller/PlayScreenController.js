@@ -60,7 +60,7 @@ exports.createGamePlay = async function(req, res, next) {
                     if ((await db.updatePlayMatrix(rememberUserName, arrayIndex)).code == 1) {
                         if ((await db.updateTimePlay(rememberUserName, timeStart, timePauseDefault, timeMinusDefault)).code == 1) {
                             resFunc.data.imageName = imageName;
-                            resFunc.data.metrix = arrayIndex;
+                            resFunc.data.matrix = arrayIndex;
                             resFunc.data.timeStart = timeStart;
                             resFunc.data.timeMinus = timeMinusDefault;
                             resFunc.data.level = level;
