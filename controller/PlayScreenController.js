@@ -169,7 +169,7 @@ function winGame(user, level, time) {
                         return resovle(true);
                     }
                 }
-                return resovle("error pause or not start");
+                return resovle("update level false");
                 return resovle(false);
             } else {
                 // pausing
