@@ -1,6 +1,7 @@
 var AccountModel = require("../model/AccountModel");
 var GenaralMethod = require("../GenaralMethod");
 var Controller = require("./Controller");
+const path = require('path');
 var fs = require('fs');
 
 exports.createGamePlay = async function(req, res, next) {
@@ -8,8 +9,9 @@ exports.createGamePlay = async function(req, res, next) {
 
 
     function getRandomImageName() {
-        return __dirname;
-        let listImage = fs.readdirSync(__dirname + "../public/images/");
+        let paths = path.join(__dirname, "../public/images/");
+        //return paths;
+        let listImage = fs.readdirSync(paths);
         return listImage[Math.floor(Math.random() * listImage.length)];
     }
 
@@ -26,6 +28,9 @@ exports.createGamePlay = async function(req, res, next) {
     }
 
     let resFunc = GenaralMethod.getResRouterObject();
+    // let imageName = getRandomImageName();
+    // res.send(JSON.stringify(imageName));
+    // return;
     try {
         let db = new AccountModel.AccountModel();
         let params = Controller.getParams(req);
@@ -41,9 +46,9 @@ exports.createGamePlay = async function(req, res, next) {
         if (level >= 3 && level <= 6) {
             //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
             if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
-                let imageName = getRandomImageName();
-                res.send(JSON.stringify(imageName));
-                return;
+                // let imageName = getRandomImageName();
+                // res.send(JSON.stringify("imageName"));
+                // return;
                 let arrayIndex = getRandomArrayIndex(level * level);
                 let timeStart = Date.now();
                 let timePauseDefault = 0;
