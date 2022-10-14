@@ -1,17 +1,20 @@
 var AccountModel = require("../model/AccountModel");
 var GenaralMethod = require("../GenaralMethod");
 var Controller = require("./Controller");
-const path = require('path');
-var fs = require('fs');
+// const path = require('path');
+// var fs = require('fs');
+var ListImageResource = require("../data/PlayImageList");
 
 exports.createGamePlay = async function(req, res, next) {
 
 
 
     function getRandomImageName() {
-        let paths = path.join(__dirname, "../public/images/");
-        return paths;
-        let listImage = fs.readdirSync(paths);
+        // let paths = path.join(__dirname, "../public/images/");
+        // return paths;
+        // let listImage = fs.readdirSync(paths);
+        // return listImage;
+        let listImage = ListImageResource.images;
         return listImage[Math.floor(Math.random() * listImage.length)];
     }
 
