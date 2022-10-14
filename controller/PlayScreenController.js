@@ -166,7 +166,7 @@ function winGame(user, level, time) {
 
                     let updateTimePlay = await db.updateTimePlay(user, 0, 0, 0);
                     if (updateTimePlay.code == 1) {
-                        return resovle(false);
+                        return resovle(true);
                     }
                 }
                 return resovle(false);
@@ -249,7 +249,7 @@ exports.move = async function(req, res, next) {
                             resFunc.data.matrix = arrayIndex;
                             let updateMatrix = await db.updatePlayMatrix(rememberUserName, arrayIndex);
                             if (updateMatrix.code == 1) {
-                                if (checkWin(resFunc.data.matrix) && (await winGame(rememberUserName, level))) {
+                                if (checkWin(resFunc.data.matrix) && (await winGame(rememberUserName, level)) == true) {
                                     //win
                                     resFunc.data.isWin = true;
                                 } else {
