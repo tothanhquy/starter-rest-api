@@ -20,7 +20,7 @@ exports.createGamePlay = async function(req, res, next) {
 
     function getRandomArrayIndex(count) {
         let arrayIndex = new int[count];
-        arrayIndex.map((a, i) => i);
+        arrayIndex = arrayIndex.map((a, i) => i);
         for (let i = arrayIndex.length - 2; i >= 2; i--) {
             let j = Math.floor(Math.random() * (i - 1));
             let temp = arrayIndex[i];
@@ -50,9 +50,9 @@ exports.createGamePlay = async function(req, res, next) {
             //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
             if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
                 let imageName = getRandomImageName();
+                let arrayIndex = getRandomArrayIndex(level * level);
                 res.send(JSON.stringify("imageName"));
                 return;
-                let arrayIndex = getRandomArrayIndex(level * level);
                 let timeStart = Date.now();
                 let timePauseDefault = 0;
                 let timeMinusDefault = 0;
