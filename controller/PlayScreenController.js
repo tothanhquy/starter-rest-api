@@ -166,15 +166,12 @@ function winGame(user, level, time) {
                         return resovle(true);
                     }
                 }
-                return resovle("update level false" + JSON.stringify(updateLevel));
                 return resovle(false);
             } else {
                 // pausing
-                return resovle("error pause or not start");
                 return resovle(false);
             }
         } else {
-            return resovle("error get time play");
             return resovle(false);
         }
     });

@@ -168,7 +168,7 @@ exports.AccountModel = class {
             let resFunc = GenaralMethod.getResModelObject();
 
             try {
-                if (Number.isInteger(level) && level <= 6 && level <= 3) {
+                if (Number.isInteger(level) && level <= 6 && level >= 3) {
                     let levelSql = "level" + level + "x" + level;
                     let sql = "select top 3 user_name," + levelSql + " from account where " + levelSql + " is not null order by " + levelSql + " ASC";;
 
@@ -206,16 +206,12 @@ exports.AccountModel = class {
                         let resDB = await Model.executeQueryPromise(sql, sqlAgruments);
                         if (resDB.code === 1 && resDB.effectedRows !== 0) {
                             resFunc.code = 1;
-                        } else {
-                            resFunc.error = JSON.stringify(resDB);
                         }
 
-                    } else {
-                        resFunc.error = sec;
                     }
                 }
             } catch (err) {
-                resFunc.error = "error" + err;
+                resFunc.error = "error";
             }
             return resolve(resFunc);
         });
