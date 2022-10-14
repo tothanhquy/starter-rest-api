@@ -243,14 +243,18 @@ exports.move = async function(req, res, next) {
                             arrayIndex[level * level - 1] = swapLocation;
 
                             resFunc.data.matrix = arrayIndex;
+                            let updateMatrix = await db.updatePlayMatrix(rememberUserName, arrayIndex);
+                            if (updateMatrix.code == 1) {
+                                if (checkWin(resFunc.data.matrix) && winGame(rememberUserName, level)) {
+                                    //win
+                                    resFunc.data.isWin = true;
+                                } else {
+                                    resFunc.data.isWin = false;
+                                }
+                                resFunc.code = 1;
 
-                            if (checkWin(resFunc.data.matrix) && winGame(rememberUserName, level)) {
-                                //win
-                                resFunc.data.isWin = true;
-                            } else {
-                                resFunc.data.isWin = false;
                             }
-                            resFunc.code = 1;
+
                         }
                     }
                 }
