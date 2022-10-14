@@ -170,7 +170,7 @@ exports.AccountModel = class {
             try {
                 if (Number.isInteger(level) && level <= 6 && level >= 3) {
                     let levelSql = "level" + level + "x" + level;
-                    let sql = "select top 3 user_name," + levelSql + " from account where " + levelSql + " is not null order by " + levelSql + " ASC";;
+                    let sql = "select user_name," + levelSql + " from account where " + levelSql + " is not null order by " + levelSql + " ASC limit 3";;
 
                     let sqlAgruments = [];
                     let resDB = await Model.executeQueryPromise(sql, sqlAgruments);
@@ -181,13 +181,11 @@ exports.AccountModel = class {
                             user: a.user_name,
                             point: a[levelSql]
                         }));
-                    } else {
-                        resFunc.error = JSON.stringify(resDB);
                     }
                 }
 
             } catch (err) {
-                resFunc.error = "error" + err;
+                resFunc.error = "error";
             }
             return resolve(resFunc);
         });
