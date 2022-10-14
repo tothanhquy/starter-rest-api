@@ -39,7 +39,8 @@ exports.createGamePlay = async function(req, res, next) {
 
         if (level >= 3 && level <= 6) {
             //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
-
+            res.send(JSON.stringify(resFunc) + "asas");
+            return;
             if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
                 let imageName = getRandomImageName();
                 let arrayIndex = getRandomArrayIndex(level * level);
@@ -47,8 +48,7 @@ exports.createGamePlay = async function(req, res, next) {
                 let timePauseDefault = 0;
                 let timeMinusDefault = 0;
 
-                res.send(JSON.stringify(resFunc) + "asas");
-                return;
+
 
                 if ((await db.updateImageName(rememberUserName, imageName)).code == 1) {
                     if ((await db.updatePlayMatrix(rememberUserName, arrayIndex)).code == 1) {
