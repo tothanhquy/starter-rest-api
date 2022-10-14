@@ -5,7 +5,7 @@ var fs = require('fs');
 
 exports.createGamePlay = async function(req, res, next) {
 
-    res.send(156);
+    res.send("" + 156);
     return;
 
     function getRandomImageName() {
