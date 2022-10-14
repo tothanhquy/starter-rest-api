@@ -151,7 +151,7 @@ function checkWin(arrayIndex) {
 function winGame(user, level, time) {
     return new Promise(async(resovle, reject) => {
         let db = new AccountModel.AccountModel();
-        let timePlay = await db.getTimePlayByUser(rememberUserName);
+        let timePlay = await db.getTimePlayByUser(user);
         if (timePlay.code == 1) {
             if (timePlay.data.timePause == 0) {
                 //not pause
