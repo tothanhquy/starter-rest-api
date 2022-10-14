@@ -4,6 +4,10 @@ var Controller = require("./Controller");
 var fs = require('fs');
 
 exports.createGamePlay = async function(req, res, next) {
+
+    res.send(156);
+    return;
+
     function getRandomImageName() {
         let listImage = fs.readdirSync("../public/images/");
         return listImage[Math.floor(Math.random() * listImage.length)];
