@@ -198,7 +198,7 @@ exports.AccountModel = class {
 
             try {
                 if (this.openConnection() && this.checkValidUserName(user)) {
-                    if (Number.isInteger(level) && Number.isInteger(level) && level <= 6 && level <= 3) {
+                    if (Number.isInteger(level) && Number.isInteger(sec) && level <= 6 && level >= 3) {
                         levelSql = "level" + level + "x" + level;
                         let sql = "update account set " + levelSql + "= ? where user_name like ?";
 
@@ -206,11 +206,14 @@ exports.AccountModel = class {
                         let resDB = await Model.executeQueryPromise(sql, sqlAgruments);
                         if (resDB.code === 1 && resDB.effectedRows !== 0) {
                             resFunc.code = 1;
+                        } else {
+                            resFunc.error = JSON.stringify(resDB);
                         }
+
                     }
                 }
             } catch (err) {
-                resFunc.error = "error";
+                resFunc.error = "error" + err;
             }
             return resolve(resFunc);
         });
