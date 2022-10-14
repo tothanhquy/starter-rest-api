@@ -103,7 +103,7 @@ exports.loadGamePlay = async function(req, res, next) {
 
                 let imageName = await db.getImageNameByUser(rememberUserName);
                 if (imageName.code == 1) {
-                    resFunc.data.imageName = imageName;
+                    resFunc.data.imageName = imageName.data;
 
                     let timePlay = await db.getTimePlayByUser(rememberUserName);
                     if (timePlay.code == 1) {
