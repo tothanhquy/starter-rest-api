@@ -202,7 +202,7 @@ exports.move = async function(req, res, next) {
             let timePlay = await db.getTimePlayByUser(rememberUserName);
             //res.send(JSON.stringify(timePlay) + "a");
             //return;
-            if (timePlay.data.code == 1) {
+            if (timePlay.code == 1) {
 
                 if (timePlay.data.timePause !== 0) {
                     //pause in last
