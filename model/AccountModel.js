@@ -197,7 +197,7 @@ exports.AccountModel = class {
             user = Model.replaceSpecialCharacter(user);
 
             try {
-                if (this.openConnection() && this.checkValidUserName(user)) {
+                if (this.checkValidUserName(user)) {
                     if (Number.isInteger(level) && Number.isInteger(sec) && level <= 6 && level >= 3) {
                         levelSql = "level" + level + "x" + level;
                         let sql = "update account set " + levelSql + "= ? where user_name like ?";
@@ -210,6 +210,8 @@ exports.AccountModel = class {
                             resFunc.error = JSON.stringify(resDB);
                         }
 
+                    } else {
+                        resFunc.error = sec;
                     }
                 }
             } catch (err) {
