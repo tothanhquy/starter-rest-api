@@ -31,6 +31,7 @@ exports.addAccount = async function(req, res, next) {
 
 exports.login = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
+
     // let asasas;
     try {
         let db = new AccountModel.AccountModel();
@@ -44,7 +45,8 @@ exports.login = async function(req, res, next) {
         } else {
 
             let resDB = await db.getPasswordByUser(user_name);
-            // res.send(JSON.stringify(req));
+            // res.send(JSON.stringify(resDB));
+            // return;
             // resFunc = resDB;
             // res.send('20');
             // resFunc.error = "asdasd" + JSON.stringify(resDB);

@@ -39,10 +39,12 @@ exports.executeQueryPromise = function(sql, sqlAgruments) {
             } else {
                 sql_conn.connect((err) => {
                     if (err) {
+                        sql_conn.destroy();
                         return resolve(GenaralMethod.getResModelObject(-1));
                     } else {
                         sql_conn.query(sql, sqlAgruments, function(err, result, fields) {
                             if (err) {
+                                sql_conn.destroy();
                                 return resolve(GenaralMethod.getResModelObject(-1));
                             }
                             // return resolve(result);
@@ -53,6 +55,7 @@ exports.executeQueryPromise = function(sql, sqlAgruments) {
                             if (result.hasOwnProperty('changedRows')) {
                                 resFunc.effectedRows = result.changedRows;
                             }
+                            sql_conn.destroy();
                             return resolve(resFunc);
                         });
                     }
