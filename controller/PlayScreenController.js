@@ -10,7 +10,7 @@ exports.createGamePlay = async function(req, res, next) {
 
     function getRandomImageName() {
         let paths = path.join(__dirname, "../public/images/");
-        //return paths;
+        return paths;
         let listImage = fs.readdirSync(paths);
         return listImage[Math.floor(Math.random() * listImage.length)];
     }
@@ -28,9 +28,9 @@ exports.createGamePlay = async function(req, res, next) {
     }
 
     let resFunc = GenaralMethod.getResRouterObject();
-    // let imageName = getRandomImageName();
-    // res.send(JSON.stringify(imageName));
-    // return;
+    let imageName = getRandomImageName();
+    res.send(JSON.stringify(imageName));
+    return;
     try {
         let db = new AccountModel.AccountModel();
         let params = Controller.getParams(req);
