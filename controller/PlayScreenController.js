@@ -39,9 +39,9 @@ exports.createGamePlay = async function(req, res, next) {
 
         if (level >= 3 && level <= 6) {
             //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
-            res.send(JSON.stringify(resFunc) + "asas");
-            return;
             if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
+                res.send(JSON.stringify(resFunc) + "asas");
+                return;
                 let imageName = getRandomImageName();
                 let arrayIndex = getRandomArrayIndex(level * level);
                 let timeStart = Date.now();
