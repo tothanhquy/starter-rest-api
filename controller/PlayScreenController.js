@@ -158,12 +158,12 @@ async function winGame(user, level, time) {
             let timeFinish = timeNow - timePlay.timeStart - timePlay.timeMinus;
 
             let updateLevel = await db.updateLevelTime(
-                rememberUserName,
+                user,
                 level,
                 timeFinish);
             if (updateLevel.code == 1) {
 
-                let updateTimePlay = await db.updateTimePlay(rememberUserName, 0, 0, 0);
+                let updateTimePlay = await db.updateTimePlay(user, 0, 0, 0);
                 if (updateTimePlay.code == 1) {
                     return true;
                 }
@@ -219,20 +219,20 @@ exports.move = async function(req, res, next) {
                         let emptyImageLocation = arrayIndex[level - 1];
                         let swapLocation = emptyImageLocation;
                         if (moveStatus == "left") {
-                            if ((emptyImageLocation % level) != (level - 1)) {
+                            if ((emptyImageLocation % level) != 0) {
                                 swapLocation = emptyImageLocation + 1;
                             }
                         } else if (moveStatus == "right") {
-                            if ((emptyImageLocation % level) != 0) {
+                            if ((emptyImageLocation % level) != (level - 1)) {
                                 swapLocation = emptyImageLocation - 1;
                             }
                         } else if (moveStatus == "up") {
                             if (Math.floor(emptyImageLocation / level) != (level - 1)) {
-                                swapLocation = emptyImageLocation - level;
+                                swapLocation = emptyImageLocation + level;
                             }
                         } else if (moveStatus == "down") {
                             if (Math.floor(emptyImageLocation / level) != 0) {
-                                swapLocation = emptyImageLocation + level;
+                                swapLocation = emptyImageLocation - level;
                             }
                         }
                         if (["left", "right", "up", "down"].indexOf(moveStatus) != -1) {
@@ -240,7 +240,7 @@ exports.move = async function(req, res, next) {
                             let swapIndexInMatrix = getIndexByValue(arrayIndex, swapLocation);
                             //swap
                             arrayIndex[swapIndexInMatrix] = emptyImageLocation;
-                            arrayIndex[level - 1] = swapLocation;
+                            arrayIndex[level * level - 1] = swapLocation;
 
                             resFunc.data.matrix = arrayIndex;
 
