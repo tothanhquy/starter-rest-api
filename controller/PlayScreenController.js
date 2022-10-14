@@ -50,9 +50,9 @@ exports.createGamePlay = async function(req, res, next) {
             //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
             if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
                 let imageName = getRandomImageName();
-                let arrayIndex = getRandomArrayIndex(level * level);
                 res.send(JSON.stringify("imageName"));
                 return;
+                let arrayIndex = getRandomArrayIndex(level * level);
                 let timeStart = Date.now();
                 let timePauseDefault = 0;
                 let timeMinusDefault = 0;
