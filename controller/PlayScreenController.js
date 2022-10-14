@@ -148,32 +148,36 @@ function checkWin(arrayIndex) {
     return true;
 }
 
-async function winGame(user, level, time) {
-    let db = new AccountModel.AccountModel();
-    let timePlay = await db.getTimePlayByUser(rememberUserName);
-    if (timePlay.code == 1) {
-        if (timePlay.timePause == 0) {
-            //not pause
-            let timeNow = Date.now();
-            let timeFinish = timeNow - timePlay.timeStart - timePlay.timeMinus;
+function winGame(user, level, time) {
+    return new Promise(async(resovle, reject) => {
+        let db = new AccountModel.AccountModel();
+        let timePlay = await db.getTimePlayByUser(rememberUserName);
+        if (timePlay.code == 1) {
+            if (timePlay.data.timePause == 0) {
+                //not pause
+                let timeNow = Date.now();
+                let timeFinish = timeNow - timePlay.data.timeStart - timePlay.data.timeMinus;
 
-            let updateLevel = await db.updateLevelTime(
-                user,
-                level,
-                timeFinish);
-            if (updateLevel.code == 1) {
+                let updateLevel = await db.updateLevelTime(
+                    user,
+                    level,
+                    timeFinish);
+                if (updateLevel.code == 1) {
 
-                let updateTimePlay = await db.updateTimePlay(user, 0, 0, 0);
-                if (updateTimePlay.code == 1) {
-                    return true;
+                    let updateTimePlay = await db.updateTimePlay(user, 0, 0, 0);
+                    if (updateTimePlay.code == 1) {
+                        return resovle(false);
+                    }
                 }
+                return resovle(false);
+            } else {
+                // pausing
+                return resovle(false);
             }
-            return false;
         } else {
-            // pausing
-            return false;
+            return resovle(false);
         }
-    }
+    });
 }
 exports.move = async function(req, res, next) {
     function getIndexByValue(arr, value) {
@@ -245,7 +249,7 @@ exports.move = async function(req, res, next) {
                             resFunc.data.matrix = arrayIndex;
                             let updateMatrix = await db.updatePlayMatrix(rememberUserName, arrayIndex);
                             if (updateMatrix.code == 1) {
-                                if (checkWin(resFunc.data.matrix) && winGame(rememberUserName, level)) {
+                                if (checkWin(resFunc.data.matrix) && (await winGame(rememberUserName, level))) {
                                     //win
                                     resFunc.data.isWin = true;
                                 } else {
@@ -284,7 +288,7 @@ exports.pause = async function(req, res, next) {
             let timePlay = await db.getTimePlayByUser(rememberUserName);
             if (timePlay.code == 1) {
 
-                if (timePlay.data.timePause !== 0) {
+                if (timePlay.data.timeStart != 0 && timePlay.data.timePause !== 0) {
                     //pause in last
                     resFunc.error = "error";
                 } else {
