@@ -181,11 +181,13 @@ exports.AccountModel = class {
                             user: a.user_name,
                             point: a[levelSql]
                         }));
+                    } else {
+                        resFunc.error = JSON.stringify(resDB);
                     }
                 }
 
             } catch (err) {
-                resFunc.error = "error";
+                resFunc.error = "error" + err;
             }
             return resolve(resFunc);
         });
