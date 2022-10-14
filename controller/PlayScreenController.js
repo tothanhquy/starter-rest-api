@@ -5,8 +5,7 @@ var fs = require('fs');
 
 exports.createGamePlay = async function(req, res, next) {
 
-    res.send("" + 156);
-    return;
+
 
     function getRandomImageName() {
         let listImage = fs.readdirSync("../public/images/");
@@ -33,6 +32,11 @@ exports.createGamePlay = async function(req, res, next) {
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
         let level = Number.parseInt(params.level);
+
+        resFunc.error = rememberUserName + "|" + rememberAccessToken + "|" + level;
+        res.send(JSON.stringify(resFunc));
+        return;
+
         if (level >= 3 && level <= 6) {
             //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
