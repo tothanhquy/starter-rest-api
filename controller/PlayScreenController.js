@@ -33,9 +33,9 @@ exports.createGamePlay = async function(req, res, next) {
         let rememberAccessToken = params.rememberAccessToken;
         let level = Number.parseInt(params.level);
 
-        resFunc.error = rememberUserName + "|" + rememberAccessToken + "|" + level;
-        res.send(JSON.stringify(resFunc));
-        return;
+        // resFunc.error = rememberUserName + "|" + rememberAccessToken + "|" + level;
+        // res.send(JSON.stringify(resFunc));
+        // return;
 
         if (level >= 3 && level <= 6) {
             //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
@@ -46,6 +46,10 @@ exports.createGamePlay = async function(req, res, next) {
                 let timeStart = Date.now();
                 let timePauseDefault = 0;
                 let timeMinusDefault = 0;
+
+                res.send(JSON.stringify(resFunc) + "asas");
+                return;
+
                 if ((await db.updateImageName(rememberUserName, imageName)).code == 1) {
                     if ((await db.updatePlayMatrix(rememberUserName, arrayIndex)).code == 1) {
                         if ((await db.updateTimePlay(rememberUserName, timeStart, timePauseDefault, timeMinusDefault)).code == 1) {
