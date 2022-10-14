@@ -193,6 +193,10 @@ exports.move = async function(req, res, next) {
         //if (level >= 3 && level <= 6) {
         //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
+        resFunc.error = rememberUserName + "|" + rememberAccessToken + "|" + moveStatus;
+        res.send(JSON.stringify(resFunc));
+        return;
+
         if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             //check pause
             let timePlay = await db.getTimePlayByUser(rememberUserName);
