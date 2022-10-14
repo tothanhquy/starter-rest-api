@@ -7,7 +7,6 @@ exports.images = [
     "pexels-mathilde-langevin-11719040.jpg",
     "pexels-mathilde-langevin-13554984.jpg",
     "pexels-mathilde-langevin-13554986.jpg",
-    "pexels-musa-ortaç-10333492.jpg",
     "pexels-nati-12346579.jpg",
     "pexels-pat-whelen-5953220.jpg",
     "pexels-rov-camato-699739.jpg"

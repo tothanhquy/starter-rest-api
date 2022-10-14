@@ -5,9 +5,9 @@ var GenaralMethod = require("../GenaralMethod");
 
 function createConnection() {
     const HOST = "sql6.freemysqlhosting.net";
-    const USER = "sql6524898";
-    const PASSWORD = "jETPiKg3hC";
-    const DATABASE = "sql6524898";
+    const USER = "sql6526407";
+    const PASSWORD = "ekZhJTfs8P";
+    const DATABASE = "sql6526407";
     const POST = "3306";
 
     let conn;
