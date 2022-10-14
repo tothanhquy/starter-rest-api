@@ -158,10 +158,7 @@ function winGame(user, level, time) {
                 let timeNow = Date.now();
                 let timeFinish = timeNow - timePlay.data.timeStart - timePlay.data.timeMinus;
 
-                let updateLevel = await db.updateLevelTime(
-                    user,
-                    level,
-                    timeFinish);
+                let updateLevel = await db.updateLevelTime(user, level, timeFinish);
                 if (updateLevel.code == 1) {
 
                     let updateTimePlay = await db.updateTimePlay(user, 0, 0, 0);
@@ -169,7 +166,7 @@ function winGame(user, level, time) {
                         return resovle(true);
                     }
                 }
-                return resovle("update level false");
+                return resovle("update level false" + JSON.stringify(updateLevel));
                 return resovle(false);
             } else {
                 // pausing
