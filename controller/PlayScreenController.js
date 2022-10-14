@@ -219,11 +219,11 @@ exports.move = async function(req, res, next) {
                         let emptyImageLocation = arrayIndex[level * level - 1];
                         let swapLocation = emptyImageLocation;
                         if (moveStatus == "left") {
-                            if ((emptyImageLocation % level) != 0) {
+                            if ((emptyImageLocation % level) != (level - 1)) {
                                 swapLocation = emptyImageLocation + 1;
                             }
                         } else if (moveStatus == "right") {
-                            if ((emptyImageLocation % level) != (level - 1)) {
+                            if ((emptyImageLocation % level) != 0) {
                                 swapLocation = emptyImageLocation - 1;
                             }
                         } else if (moveStatus == "up") {
