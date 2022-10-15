@@ -204,7 +204,7 @@ exports.AccountModel = class {
 
                         let sqlAgruments = [sec, user];
                         let resDB = await Model.executeQueryPromise(sql, sqlAgruments);
-                        if (resDB.code === 1 && resDB.effectedRows !== 0) {
+                        if (resDB.code === 1) {
                             resFunc.code = 1;
                         }
 
@@ -373,7 +373,7 @@ exports.AccountModel = class {
                         resFunc.code = 1;
                     }
                     resFunc.error = resDB.error;
-                } else resFunc.error = "int";
+                }
 
             } catch (err) {
                 resFunc.error = "error" + err;
