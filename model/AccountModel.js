@@ -372,6 +372,7 @@ exports.AccountModel = class {
                     if (resDB.code === 1 || resDB.effectedRows === 1) {
                         resFunc.code = 1;
                     }
+                    resFunc.error = resDB.error;
                 }
 
             } catch (err) {
