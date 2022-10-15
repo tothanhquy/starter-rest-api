@@ -150,34 +150,41 @@ function checkWin(arrayIndex) {
 
 function winGame(user, level, time) {
     return new Promise(async(resovle, reject) => {
-        let db = new AccountModel.AccountModel();
-        let timePlay = await db.getTimePlayByUser(user);
-        if (timePlay.code == 1) {
-            if (timePlay.data.timeStart !== 0 && timePlay.data.timePause == 0) {
-                //not pause
-                let timeNow = GenaralMethod.getUtcTimeNow();
-                let timeFinish = timeNow - timePlay.data.timeStart - timePlay.data.timeMinus;
+        try {
 
-                let updateLevel = await db.updateLevelTime(user, level, timeFinish);
-                if (updateLevel.code == 1) {
 
-                    let updateTimePlay = await db.updateTimePlay(user, 0, 0, 0);
-                    if (updateTimePlay.code == 1) {
-                        return resovle(true);
+            let db = new AccountModel.AccountModel();
+            let timePlay = await db.getTimePlayByUser(user);
+            if (timePlay.code == 1) {
+                if (timePlay.data.timeStart !== 0 && timePlay.data.timePause == 0) {
+                    //not pause
+                    let timeNow = GenaralMethod.getUtcTimeNow();
+                    let timeFinish = timeNow - timePlay.data.timeStart - timePlay.data.timeMinus;
+
+                    let updateLevel = await db.updateLevelTime(user, level, timeFinish);
+                    if (updateLevel.code == 1) {
+
+                        let updateTimePlay = await db.updateTimePlay(user, 0, 0, 0);
+                        if (updateTimePlay.code == 1) {
+                            return resovle(true);
+                        }
+                        return resovle(updateTimePlay);
+                    } else {
+                        return resovle(updateLevel);
                     }
-                    return resovle(updateTimePlay);
+                    return resovle(false);
                 } else {
-                    return resovle(updateLevel);
+                    // pausing
+                    return resovle(false);
                 }
-                return resovle(false);
             } else {
-                // pausing
                 return resovle(false);
             }
-        } else {
+        } catch (err) {
             return resovle(false);
         }
     });
+
 }
 exports.move = async function(req, res, next) {
     function getIndexByValue(arr, value) {
@@ -252,12 +259,12 @@ exports.move = async function(req, res, next) {
                                 resFunc.data.isWin = false;
                                 if (checkWin(resFunc.data.matrix)) {
                                     //win
-                                    resFunc.error = "win";
+                                    //resFunc.error = "win";
                                     let updateWin = await winGame(rememberUserName, level);
                                     if (updateWin === true) {
                                         resFunc.data.isWin = true;
                                     } else {
-                                        //resFunc.error = updateWin;
+                                        resFunc.error = updateWin;
                                     }
                                 }
                                 resFunc.code = 1;
