@@ -29,9 +29,7 @@ function createConnection() {
 
 
 exports.executeQueryPromise = function(sql, sqlAgruments) {
-    // return (JSON.stringify(sqlAgruments));
     return new Promise((resolve, reject) => {
-        //var resFunc = GenaralMethod.getResModelObject();
         try {
             let sql_conn = createConnection();
             if (sql_conn === null) {
@@ -47,8 +45,6 @@ exports.executeQueryPromise = function(sql, sqlAgruments) {
                                 sql_conn.destroy();
                                 return resolve(GenaralMethod.getResModelObject(-1));
                             }
-                            // return resolve(result);
-                            // return resolve(JSON.stringify(sqlAgruments) + "sad");
                             let resFunc = GenaralMethod.getResModelObject();
                             resFunc.data = result;
                             resFunc.code = 1;
@@ -63,9 +59,7 @@ exports.executeQueryPromise = function(sql, sqlAgruments) {
             }
         } catch (err) {
             return resolve(GenaralMethod.getResModelObject(-1));
-        } finally {
-            //closeConnection();
-        }
+        } finally {}
     });
 }
 

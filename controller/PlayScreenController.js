@@ -72,9 +72,6 @@ function getRandomArrayIndex(arrayCount, level, timeRandom) {
 
 exports.createGamePlay = async function(req, res, next) {
     let resFunc = GenaralMethod.getResRouterObject();
-    // let arrayIndex = getRandomArrayIndex(5);
-    // res.send(JSON.stringify(arrayIndex));
-    // return;
     try {
         let db = new AccountModel.AccountModel();
         let params = Controller.getParams(req);
@@ -83,17 +80,11 @@ exports.createGamePlay = async function(req, res, next) {
         let rememberAccessToken = params.rememberAccessToken;
         let level = Number.parseInt(params.level);
 
-        // resFunc.error = rememberUserName + "|" + rememberAccessToken + "|" + level;
-        // res.send(JSON.stringify(resFunc));
-        // return;
-
         if (level >= 3 && level <= 6) {
-            //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
             if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
                 let imageName = getRandomImageName();
                 let arrayIndex = getRandomArrayIndex(level * level, level, 10);
-                // res.send(JSON.stringify("imageName"));
-                // return;
+
                 let timeStart = GenaralMethod.getUtcTimeNow();
                 let timePauseDefault = 0;
                 let timeMinusDefault = 0;
@@ -131,8 +122,6 @@ exports.loadGamePlay = async function(req, res, next) {
 
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
-
-        //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
         if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let arrayIndex;
@@ -242,18 +231,11 @@ exports.move = async function(req, res, next) {
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
         let moveStatus = params.moveStatus;
-        //if (level >= 3 && level <= 6) {
-        //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
-
-        // resFunc.error = rememberUserName + "|" + rememberAccessToken + "|" + moveStatus;
-        // res.send(JSON.stringify(resFunc));
-        // return;
 
         if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             //check pause
             let timePlay = await db.getTimePlayByUser(rememberUserName);
-            //res.send(JSON.stringify(timePlay) + "a");
-            //return;
+
             if (timePlay.code == 1) {
 
                 if (timePlay.data.timeStart == 0 || timePlay.data.timePause !== 0) {
@@ -318,9 +300,8 @@ exports.move = async function(req, res, next) {
             resFunc.error = "not_login";
         }
     } catch (error) {
-        resFunc.error = "error" + error;
+        resFunc.error = "error";
     }
-    // resFunc.error = moveStatus;
     res.send(JSON.stringify(resFunc));
 }
 
@@ -332,8 +313,6 @@ exports.pause = async function(req, res, next) {
 
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
-
-        //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
         if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let timePlay = await db.getTimePlayByUser(rememberUserName);
@@ -360,7 +339,7 @@ exports.pause = async function(req, res, next) {
         }
 
     } catch (error) {
-        resFunc.error = "error" + error;
+        resFunc.error = "error";
     }
     res.send(JSON.stringify(resFunc));
 }

@@ -10,20 +10,14 @@ exports.AccountModel = class {
     getPasswordByUser(user) {
         return new Promise(async(resolve, reject) => {
             let resFunc = GenaralMethod.getResModelObject();
-            // resFunc.error = user;
-            // return resolve(resFunc);
             try {
                 user = Model.replaceSpecialCharacter(user);
-                // return resolve(456);
                 if (this.checkValidUserName(user) === false) {
                     resFunc.error = "unvalid_value";
                 } else {
                     let sql = "select pass_word from account where user_name like ?";
                     let sqlAgruments = [user];
                     let resDB = await Model.executeQueryPromise(sql, sqlAgruments);
-
-                    // return resolve(resDB.data.length);
-
 
                     if (resDB.code === 1) {
                         if (resDB.data.length === 0) {
@@ -45,8 +39,6 @@ exports.AccountModel = class {
     addAccount(user, password) {
         return new Promise(async(resolve, reject) => {
             let resFunc = GenaralMethod.getResModelObject();
-            //resFunc.error = user + "|" + password;
-            //return resolve(resFunc);
             try {
                 if (this.checkValidUserNameAndPassword(user, password) === false) {
                     resFunc.error = "unvalid_value";
@@ -73,7 +65,7 @@ exports.AccountModel = class {
                 }
 
             } catch (err) {
-                resFunc.error = "error" + err;
+                resFunc.error = "error";
             }
 
             return resolve(resFunc);
@@ -155,7 +147,7 @@ exports.AccountModel = class {
                 }
 
             } catch (err) {
-                resFunc.error = "error" + err;
+                resFunc.error = "error";
             }
 
             return resolve(resFunc);
@@ -406,7 +398,6 @@ exports.AccountModel = class {
         return true;
     }
     checkValidPlayMatrix(arr) {
-        //int arr
         for (let index = 0; index < arr.length; index++) {
             if (!Number.isInteger(arr[index])) return false;
         }

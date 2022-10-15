@@ -45,12 +45,6 @@ exports.login = async function(req, res, next) {
         } else {
 
             let resDB = await db.getPasswordByUser(user_name);
-            // res.send(JSON.stringify(resDB));
-            // return;
-            // resFunc = resDB;
-            // res.send('20');
-            // resFunc.error = "asdasd" + JSON.stringify(resDB);
-            // res.send(JSON.stringify(resFunc));
             if (resDB.code == 1) {
                 if (Controller.verifyPassword(pass_word, resDB.data) === true) {
                     //success
@@ -75,7 +69,7 @@ exports.login = async function(req, res, next) {
             }
         }
     } catch (error) {
-        resFunc.error = "error" + error;
+        resFunc.error = "error";
     }
     res.send(JSON.stringify(resFunc));
 }
@@ -85,7 +79,6 @@ exports.changePassword = async function(req, res, next) {
     try {
         let db = new AccountModel.AccountModel();
         let params = Controller.getParams(req);
-        //let user_name = params.user;
         let oldPassWord = params.oldPassword;
         let newPassWord = params.newPassword;
 
@@ -95,8 +88,6 @@ exports.changePassword = async function(req, res, next) {
 
             let rememberUserName = params.rememberUserName;
             let rememberAccessToken = params.rememberAccessToken;
-
-            //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
 
             if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
                 let resDB = await db.getPasswordByUser(rememberUserName);
@@ -140,8 +131,6 @@ exports.logout = async function(req, res, next) {
         let rememberUserName = params.rememberUserName;
         let rememberAccessToken = params.rememberAccessToken;
 
-        //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
-
         if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
             let accessToken = GenaralMethod.generatorString(50);
             let resUpdAT = await db.updateAccessToken(rememberUserName, accessToken);
@@ -152,7 +141,7 @@ exports.logout = async function(req, res, next) {
             resFunc.error = "not_login";
         }
     } catch (error) {
-        resFunc.error = "error" + error;
+        resFunc.error = "error";
     }
     res.send(JSON.stringify(resFunc));
 }
