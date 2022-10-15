@@ -166,7 +166,7 @@ function winGame(user, level, time) {
                         return resovle(true);
                     }
                 } else {
-                    return resovle(updateLevel);
+                    //return resovle(updateLevel);
                 }
                 return resovle(false);
             } else {
