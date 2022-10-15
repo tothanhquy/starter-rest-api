@@ -36,7 +36,7 @@ exports.AccountModel = class {
                     }
                 }
             } catch (err) {
-                resFunc.error = "error" + err;
+                resFunc.error = "error";
             }
             return resolve(resFunc);
         });
@@ -211,7 +211,7 @@ exports.AccountModel = class {
                     }
                 }
             } catch (err) {
-                resFunc.error = "error" + err;
+                resFunc.error = "error";
             }
             return resolve(resFunc);
         });
@@ -376,7 +376,7 @@ exports.AccountModel = class {
                 }
 
             } catch (err) {
-                resFunc.error = "error" + err;
+                resFunc.error = "error";
             }
 
             return resolve(resFunc);

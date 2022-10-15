@@ -1,8 +1,6 @@
 var AccountModel = require("../model/AccountModel");
 var GenaralMethod = require("../GenaralMethod");
 var Controller = require("./Controller");
-// const path = require('path');
-// var fs = require('fs');
 var ListImageResource = require("../data/PlayImageList");
 
 function getRandomImageName() {
@@ -14,15 +12,61 @@ function getRandomImageName() {
     return listImage[Math.floor(Math.random() * listImage.length)];
 }
 
-function getRandomArrayIndex(count) {
-    let arrayIndex = new Array(count).fill();
+function getRandomArrayIndex(arrayCount, level, timeRandom) {
+    let arrayIndex = new Array(arrayCount).fill();
     arrayIndex = arrayIndex.map((e, i) => i);
-    for (let i = arrayIndex.length - 2; i >= 2; i--) {
-        let j = Math.floor(Math.random() * (i - 1));
+    //random
+    let moveStatus;
+    let emptyImageLocation;
+
+    function swap(i, j) {
         let temp = arrayIndex[i];
         arrayIndex[i] = arrayIndex[j];
         arrayIndex[j] = temp;
     }
+
+    function findIndexByvalue(value) {
+        return arrayIndex.findIndex(a => a == value);
+    }
+
+    while (timeRandom <= 0) {
+        emptyImageLocation = arrayIndex[arrayCount - 1];
+        moveStatus = Math.random() * 4;
+        if (moveStatus >= 3) {
+            if ((emptyImageLocation % level) != (level - 1)) {
+                //swapLocation = emptyImageLocation + 1;
+                swap(findIndexByvalue(emptyImageLocation + 1), arrayCount - 1);
+                timeRandom--;
+            }
+        } else if (moveStatus >= 2) {
+            if ((emptyImageLocation % level) != 0) {
+                //swapLocation = emptyImageLocation - 1;
+                swap(findIndexByvalue(emptyImageLocation - 1), arrayCount - 1);
+                timeRandom--;
+            }
+        } else if (moveStatus >= 1) {
+            if (Math.floor(emptyImageLocation / level) != (level - 1)) {
+                //swapLocation = emptyImageLocation + level;
+                swap(findIndexByvalue(emptyImageLocation + level), arrayCount - 1);
+                timeRandom--;
+            }
+        } else if (moveStatus >= 0) {
+            if (Math.floor(emptyImageLocation / level) != 0) {
+                //swapLocation = emptyImageLocation - level;
+                swap(findIndexByvalue(emptyImageLocation - level), arrayCount - 1);
+                timeRandom--;
+            }
+        }
+
+
+
+    }
+    // for (let i = arrayIndex.length - 2; i >= 2; i--) {
+    //     let j = Math.floor(Math.random() * (i - 1));
+    //     let temp = arrayIndex[i];
+    //     arrayIndex[i] = arrayIndex[j];
+    //     arrayIndex[j] = temp;
+    // }
     return arrayIndex;
 }
 
@@ -47,7 +91,7 @@ exports.createGamePlay = async function(req, res, next) {
             //let rememberAccount = await Controller.checkRemember(rememberUserName, rememberAccessToken);
             if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
                 let imageName = getRandomImageName();
-                let arrayIndex = getRandomArrayIndex(level * level);
+                let arrayIndex = getRandomArrayIndex(level * level, level, 1000);
                 // res.send(JSON.stringify("imageName"));
                 // return;
                 let timeStart = GenaralMethod.getUtcTimeNow();
@@ -167,10 +211,7 @@ function winGame(user, level, time) {
                         let updateTimePlay = await db.updateTimePlay(user, 0, 0, 0);
                         if (updateTimePlay.code == 1) {
                             return resovle(true);
-                        } else
-                            return resovle(updateTimePlay + "time");
-                    } else {
-                        return resovle("updateLevel");
+                        }
                     }
                     return resovle(false);
                 } else {
@@ -263,8 +304,6 @@ exports.move = async function(req, res, next) {
                                     let updateWin = await winGame(rememberUserName, level);
                                     if (updateWin === true) {
                                         resFunc.data.isWin = true;
-                                    } else {
-                                        resFunc.error = updateWin;
                                     }
                                 }
                                 resFunc.code = 1;
