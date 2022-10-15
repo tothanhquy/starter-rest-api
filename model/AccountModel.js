@@ -211,7 +211,7 @@ exports.AccountModel = class {
                     }
                 }
             } catch (err) {
-                resFunc.error = "error";
+                resFunc.error = "error" + err;
             }
             return resolve(resFunc);
         });
