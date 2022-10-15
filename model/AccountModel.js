@@ -373,7 +373,7 @@ exports.AccountModel = class {
                         resFunc.code = 1;
                     }
                     resFunc.error = resDB.error;
-                }
+                } else resFunc.error = "int";
 
             } catch (err) {
                 resFunc.error = "error" + err;
