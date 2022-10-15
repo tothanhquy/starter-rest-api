@@ -50,7 +50,7 @@ exports.createGamePlay = async function(req, res, next) {
                 let arrayIndex = getRandomArrayIndex(level * level);
                 // res.send(JSON.stringify("imageName"));
                 // return;
-                let timeStart = Date.now();
+                let timeStart = GenaralMethod.getUtcTimeNow();
                 let timePauseDefault = 0;
                 let timeMinusDefault = 0;
 
@@ -114,7 +114,7 @@ exports.loadGamePlay = async function(req, res, next) {
                             resFunc.code = 1;
                         } else {
                             // pause in past
-                            let timeNow = Date.now();
+                            let timeNow = GenaralMethod.getUtcTimeNow();
 
                             resFunc.data.timeStart = timePlay.data.timeStart;
                             resFunc.data.timeMinus = timePlay.data.timeMinus + (timeNow - timePlay.data.timePause);
@@ -155,7 +155,7 @@ function winGame(user, level, time) {
         if (timePlay.code == 1) {
             if (timePlay.data.timeStart !== 0 && timePlay.data.timePause == 0) {
                 //not pause
-                let timeNow = Date.now();
+                let timeNow = GenaralMethod.getUtcTimeNow();
                 let timeFinish = timeNow - timePlay.data.timeStart - timePlay.data.timeMinus;
 
                 let updateLevel = await db.updateLevelTime(user, level, timeFinish);
@@ -294,7 +294,7 @@ exports.pause = async function(req, res, next) {
                     resFunc.error = "error";
                 } else {
                     //pause now
-                    let timeNow = Date.now();
+                    let timeNow = GenaralMethod.getUtcTimeNow();
                     let updateTimePlay = await db.updateTimePlay(
                         rememberUserName,
                         timePlay.data.timeStart,
