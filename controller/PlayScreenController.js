@@ -257,7 +257,7 @@ exports.move = async function(req, res, next) {
                                     if (updateWin === true) {
                                         resFunc.data.isWin = true;
                                     } else {
-                                        resFunc.error = updateWin;
+                                        //resFunc.error = updateWin;
                                     }
                                 }
                                 resFunc.code = 1;
