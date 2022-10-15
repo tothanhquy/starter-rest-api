@@ -29,7 +29,7 @@ function getRandomArrayIndex(arrayCount, level, timeRandom) {
         return arrayIndex.findIndex(a => a == value);
     }
 
-    while (timeRandom <= 0) {
+    while (timeRandom > 0) {
         emptyImageLocation = arrayIndex[arrayCount - 1];
         moveStatus = Math.random() * 4;
         if (moveStatus >= 3) {
