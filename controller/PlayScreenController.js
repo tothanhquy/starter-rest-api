@@ -251,6 +251,7 @@ exports.move = async function(req, res, next) {
                                 resFunc.data.isWin = false;
                                 if (checkWin(resFunc.data.matrix)) {
                                     //win
+                                    resFunc.error = "win";
                                     let updateWin = await winGame(rememberUserName, level);
                                     if (updateWin === true) {
                                         resFunc.data.isWin = true;
