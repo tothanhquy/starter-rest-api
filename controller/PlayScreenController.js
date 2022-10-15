@@ -165,8 +165,9 @@ function winGame(user, level, time) {
                     if (updateTimePlay.code == 1) {
                         return resovle(true);
                     }
+                    return resovle(updateTimePlay);
                 } else {
-                    //return resovle(updateLevel);
+                    return resovle(updateLevel);
                 }
                 return resovle(false);
             } else {
