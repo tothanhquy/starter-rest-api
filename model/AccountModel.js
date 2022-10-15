@@ -200,7 +200,7 @@ exports.AccountModel = class {
                 if (this.checkValidUserName(user)) {
                     if (Number.isInteger(level) && Number.isInteger(sec) && level <= 6 && level >= 3) {
                         let levelSql = "level" + level + "x" + level;
-                        let sql = "update account set " + levelSql + "= ? where user_name like ? and " + levelSql + " > " + sec;
+                        let sql = "update account set " + levelSql + "= ? where user_name like ? and (" + levelSql + " is null or " + levelSql + " > " + sec + ")";
 
                         let sqlAgruments = [sec, user];
                         let resDB = await Model.executeQueryPromise(sql, sqlAgruments);
