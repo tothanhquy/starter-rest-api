@@ -83,7 +83,7 @@ exports.createGamePlay = async function(req, res, next) {
         if (level >= 3 && level <= 6) {
             if (await Controller.checkRemember(rememberUserName, rememberAccessToken)) {
                 let imageName = getRandomImageName();
-                let arrayIndex = getRandomArrayIndex(level * level, level, 10);
+                let arrayIndex = getRandomArrayIndex(level * level, level, 10000);
 
                 let timeStart = GenaralMethod.getUtcTimeNow();
                 let timePauseDefault = 0;
